@@ -1,0 +1,49 @@
+with GNATCOLL.Strings_Impl;
+with Ada.Wide_Wide_Characters.Handling, Ada.Characters;
+use Ada.Wide_Wide_Characters.Handling;
+with Ada.Characters.Conversions;
+with Ada.Containers.Doubly_Linked_Lists;
+with GNATCOLL.Config;
+with Templates_Parser;
+
+package Generator is
+
+   use Templates_Parser;
+
+   package aString is new GNATCOLL.Strings_Impl.Strings
+     (SSize            => GNATCOLL.Strings_Impl.Optimal_String_Size,
+      Character_Type   => Wide_Wide_Character,
+      Character_String => Wide_Wide_String);
+
+   use Generator.aString;
+
+   type Document is record
+      Filepath    : XString := Null_XString;
+      Targetpath  : XString := Null_XString;
+      Filename    : XString := Null_XString;
+      Basename    : XString := Null_XString;
+      Linkpath    : XString := Null_XString;
+      Layout      : XString := Null_XString;
+      Content     : XString := Null_XString;
+      T : Translate_Set;
+   end record;
+
+   package Document_Container is new Ada.Containers.Doubly_Linked_Lists
+     (Document);
+   use Document_Container;
+
+   Documents   : Document_Container.list;
+   Debug       : Boolean := false;
+
+   -- Enumerate contents
+   ---- Read header
+   ---- Convert md
+   ---- Create associations
+   ---- Create file in target
+   ---- Create contents by parsing template with associations.
+
+   procedure Start (Source_Directory : String; Target_Directory : String);
+
+private
+
+end Generator;
