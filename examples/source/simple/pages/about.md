@@ -1,5 +1,5 @@
 ---
-layout : page.hbs
+layout : default.hbs
 title : About
 permalink : /about/
 ---

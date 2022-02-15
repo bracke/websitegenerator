@@ -32,17 +32,9 @@ package Generator is
      (Document);
    use Document_Container;
 
-   Documents   : Document_Container.list;
-   Debug       : Boolean := false;
+   Debug : boolean := false;
 
-   -- Enumerate contents
-   ---- Read header
-   ---- Convert md
-   ---- Create associations
-   ---- Create file in target
-   ---- Create contents by parsing template with associations.
-
-   procedure Start (Source_Directory : String; Target_Directory : String);
+   procedure Start (Source_Directory : string; Target_Directory : string);
 
 private
 

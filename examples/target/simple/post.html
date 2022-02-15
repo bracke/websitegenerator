@@ -5,7 +5,7 @@
 <meta http-equiv="x-ua-compatible" content="ie=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>
-Posts |
+Blog |
 WebsiteGenerator
 </title>
 <link rel="stylesheet" href="/css/main.css">
@@ -13,34 +13,35 @@ WebsiteGenerator
 <a name="top"></a>
 <header>
 <h1></h1>
-   <h2>Posts</h2>
+   <h2>Blog</h2>
 </header><main>
-<article><h2>{{ page.title }}</h2>
-<time
-  >{{ page.date | date: "%b %-d, %Y" }}{% if page.author %} • {{ page.author
-  }}{% endif %}{% if page.meta %} • {{ page.meta }}{% endif %}</time
->
-
-{{ content }}</article>
+<article></article>
 </main>
 <aside>
 	<div class="container">
 		<nav>
 			<ul>
             <li>
-               <a href="/blog/index.html">Index</a>
+               <a href="//index.html">Index</a>
             </li>
             <li>
-               <a href="/index.html">Index</a>
+               <a href="//post.html">Post</a>
             </li>
             <li>
-               <a href="/post.html">Post</a>
+               <a href="//pages/contact.html">Contact</a>
             </li>
             <li>
-               <a href="/pages/contact.html">Contact</a>
+               <a href="//pages/about.html">About</a>
             </li>
+			</ul>
+		</nav>
+	</div>
+</aside><aside>
+	<div class="container">
+		<nav>
+			<ul>
             <li>
-               <a href="/pages/about.html">About</a>
+               <a href="/blog/first.html">First</a>
             </li>
 			</ul>
 		</nav>
@@ -48,7 +49,7 @@ WebsiteGenerator
 </aside><footer>
   <p>
    Creative Commons (CC0 1.0 Universal),
-   Generated: 2022-02-13 20:43:26 with
+   Generated: 2022-02-15 20:50:04 with
     <a href="https://github.com/bracke/websitegenerator" target="_blank">WebsiteGenerator</a>
     , color scheme:
     <a href="https://github.com/morhetz/gruvbox">
