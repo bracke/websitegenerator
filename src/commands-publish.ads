@@ -21,7 +21,7 @@ type Instance
   overriding function Long_Description
    (Cmd : Instance) return AAA.Strings.Vector is
    (AAA.Strings.Empty_Vector.Append
-     ("Publish the website the website to the target folder")
+     ("Publish the website to the target folder")
      .New_Line
      );
 
@@ -33,12 +33,12 @@ type Instance
    ("Publish the website to the target folder");
 
   overriding function Usage_Custom_Parameters (Cmd : Instance) return String is
-   ("[-dry-run]");
+   ("[--source <folderpath>]");
 
 private
 
   type Instance is new CLIC.Subcommand.Command with record
-    Dry_Run : aliased Boolean := False;
+   Source : aliased GNAT.Strings.String_Access;
   end record;
 
 end Commands.Publish;

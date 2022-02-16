@@ -11,10 +11,16 @@ with Ada.Exceptions; use Ada.Exceptions;
 with CLIC.Subcommand;
 with Commands;
 with CLIC.TTY;
+with GNAT.Strings;
+with Generator;
+with Ada.Characters.Conversions;
 
 package body Commands.Publish is
 
+ use Ada.Characters.Conversions;
+   use GNAT.Strings;
    use Ada.Containers;
+  use Generator.aString;
 
   package IO renames Ada.Text_IO;
   package TT renames CLIC.TTY;
@@ -28,23 +34,26 @@ package body Commands.Publish is
                       Args :        AAA.Strings.Vector)
   is
     ToDo : Action := Write;
+    Source : XString := To_XString(To_Wide_Wide_String(Ada.Directories.Current_Directory));
   begin
-    if Cmd.Dry_Run then
-      IO.Put_Line(TT.Emph("You specified the dry-run flag, so no changes will be written."));
-      ToDo := DryRun;
-    end if;
-
    if Args.Length > 0 then
+      if Cmd.Source.all /= "" then
+        Source := To_XString(To_Wide_Wide_String(Cmd.Source.all));
+      end if;
 
       declare
-         Website_Source : String := Ada.Directories.Current_Directory;
+         Website_Source : String := Ada.Directories.Full_Name(To_String(To_String(Source)));
          Website_Target : String :=
          Ada.Directories.Full_Name (Ada.Command_Line.Argument (1));
       begin
-         Generator.Start (Website_Source, Website_Target);
+         if Ada.Directories.Exists(Website_Source) then
+            Generator.Start (Website_Source, Website_Target);
 
-         Ada.Directories.Set_Directory (Directory => Website_Target);
-         Server.Start_Server;
+            Ada.Directories.Set_Directory (Directory => Website_Target);
+            Server.Start_Server;
+         else
+            IO.Put_Line(TT.Error("Source folder (" & Website_Source & ") does not exist."));
+         end if;
       end;
     else
       IO.Put_Line(TT.Error("Command requires a target folder to be specified."));
@@ -64,7 +73,10 @@ package body Commands.Publish is
       use CLIC.Subcommand;
    begin
       Define_Switch
-      (Config, Cmd.Dry_Run'Access, "", "-dry-run", "Dry-run");
+        (Config,
+         Cmd.Source'Access,
+         "", "--source=",
+         "Selects a source folder other than the current directory");
 
    end Setup_Switches;
 

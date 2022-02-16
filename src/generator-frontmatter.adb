@@ -5,6 +5,7 @@ with Ada.Text_IO;
 with GNATCOLL.Mmap;
 with Templates_Parser;
 with GNAT.Strings;
+
 package body Generator.Frontmatter is
 
    use Ada.Characters.Conversions;
