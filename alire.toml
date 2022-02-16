@@ -1,5 +1,5 @@
 name = "websitegenerator"
-description = "Shiny new project"
+description = "Generate static websites, easy and fast."
 version = "0.0.0"
 
 authors = ["Bent Bracke"]
@@ -11,3 +11,7 @@ executables = ["websitegenerator"]
 aws = "^21.0.0"  # Added by alr
 [[depends-on]]  # Added by alr
 gnatcoll = "^21.0.0"  # Added by alr
+[[depends-on]]  # Added by alr
+clic = "~0.2.0"  # Added by alr
+[[depends-on]]  # Added by alr
+aaa = "~0.2.4"  # Added by alr
