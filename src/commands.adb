@@ -3,6 +3,8 @@ with Commands.Create;
 with Commands.Init;
 with Commands.Destroy;
 with Commands.Publish;
+with Commands.Import;
+with Commands.Deploy;
 with CLIC.TTY;
 with CLIC.User_Input;
 with Commands.Topics.Issues;
@@ -59,6 +61,8 @@ begin
   Sub_Cmd.Register ("General", new Generate.Instance);
   Sub_Cmd.Register ("General", new Destroy.Instance);
   Sub_Cmd.Register ("General", new Publish.Instance);
+  Sub_Cmd.Register ("General", new Import.Instance);
+  Sub_Cmd.Register ("General", new Deploy.Instance);
 
   -- Help topics --
   Sub_Cmd.Register (new Topics.Issues.Topic);

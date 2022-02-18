@@ -16,12 +16,12 @@ type Instance
    overriding
    function Switch_Parsing (This : Instance)
                             return CLIC.Subcommand.Switch_Parsing_Kind
-   is (CLIC.Subcommand.All_As_Args);
+   is (CLIC.Subcommand.Parse_All);
 
   overriding function Long_Description
    (Cmd : Instance) return AAA.Strings.Vector is
    (AAA.Strings.Empty_Vector.Append
-     ("Publish the website to the target folder")
+     ("Publish the website to the target folder.")
      .New_Line
      );
 
@@ -30,15 +30,16 @@ type Instance
     Config : in out CLIC.Subcommand.Switches_Configuration);
 
   overriding function Short_Description (Cmd : Instance) return String is
-   ("Publish the website to the target folder");
+   ("Publish the website to the target folder.");
 
   overriding function Usage_Custom_Parameters (Cmd : Instance) return String is
-   ("[--source <folderpath>]");
+   ("<target folderpath> [--source <folderpath>] [-d]");
 
 private
 
   type Instance is new CLIC.Subcommand.Command with record
    Source : aliased GNAT.Strings.String_Access;
+   Delete_Target_Content : aliased Boolean := False;
   end record;
 
 end Commands.Publish;

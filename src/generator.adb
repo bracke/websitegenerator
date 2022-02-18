@@ -179,19 +179,15 @@ package body Generator is
          Ada.Text_IO.Put_Line("No site configuration found at " & Config_Path);
       end if;
 
-      -- Delete result of last run
-      if Exists(Target_Directory) then
-         Delete_Tree(Target_Directory);
-      end if;
-      Create_Directory(Target_Directory);
-
       -- Copy static files and directories and create list of pages.
       Process_Directory(Documents, Source_Directory, Target_Directory, "");
 
       -- Process blog
       if Exists(Blog_Source_Directory) then
          -- Copy static files and directories and create list of pages.
-         Create_Directory(Blog_Target_Directory);
+         if not Exists(Blog_Source_Directory) then
+            Create_Directory(Blog_Target_Directory);
+         end if;
          Process_Directory(Posts, Blog_Source_Directory, Blog_Target_Directory, "blog");
       end if;
 
