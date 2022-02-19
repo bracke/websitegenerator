@@ -2,4 +2,5 @@ obj/
 lib/
 alire/
 config/
-examples/target/
+examples/target
+examples/target/simple
