@@ -1,5 +1,5 @@
 ---
-layout : default.hbs
+layout : default.tmplt
 title : Contact
 permalink : /contact/
 ----

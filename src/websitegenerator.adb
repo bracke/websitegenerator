@@ -24,7 +24,7 @@ procedure Websitegenerator is
 
    S : constant Stream_Access := Stream (Ada.Wide_Wide_Text_IO.Current_Output);
 begin
-   Templates_Parser.Set_Tag_Separators("{{","}}");
+   --Templates_Parser.Set_Tag_Separators("{{","}}");
 
    Ada.Text_IO.New_Line;
 

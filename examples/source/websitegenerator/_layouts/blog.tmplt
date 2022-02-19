@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+@@IF@@ @_EXIST:language_@
+<html lang="@_language_@">
+@@ELSE@@
+<html lang="@_site_language_@">
+@@END_IF@@
+@@INCLUDE@@ head.tmplt
+<body>
+@@INCLUDE@@ header.tmplt
+<main>
+<article>
+<h2>@_title_@</h2>
+@_content_@
+</article>
+<aside>
+  <div class="container">
+    @@INCLUDE@@ nav.tmplt @_basename_@
+    @@INCLUDE@@ postsnav.tmplt @_basename_@
+  </div>
+</aside>
+</main>
+@@INCLUDE@@ footer.tmplt
+</body>
+</html>

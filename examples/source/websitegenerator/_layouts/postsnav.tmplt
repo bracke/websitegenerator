@@ -1,0 +1,13 @@
+<nav>
+<strong class="title">Blog</strong>
+<ul>
+@@TABLE@@
+<li>
+@@IF@@ @_$1_@ = @_POSTNAME_@
+<a href="/@_LOWER:POSTPATH_@" class="active">@_CAPITALIZE:POSTNAME_@</a>
+@@ELSE@@
+<a href="/@_LOWER:POSTPATH_@">@_CAPITALIZE:POSTNAME_@</a>
+@@END_IF@@
+</li>
+@@END_TABLE@@
+</ul></nav>

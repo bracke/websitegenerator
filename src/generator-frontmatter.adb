@@ -125,6 +125,11 @@ package body Generator.Frontmatter is
          Ada.Text_IO.Put_Line("File " & Filepath & " does not exist");
       end if;
 
+      Insert (aDocument.T,Assoc ("basename",Base_Name));
+      Insert (aDocument.T,Assoc ("filename",Filename));
+      Insert (aDocument.T,Assoc ("targetname",Targetname));
+      Insert (aDocument.T,Assoc ("linkpath",Linkpath));
+      Insert (aDocument.T,Assoc ("filepath",Filepath));
       return aDocument;
 
    end Read;

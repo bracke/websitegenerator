@@ -7,6 +7,8 @@ with Ada.Characters.Handling;
 with Generator.Frontmatter;
 with Ada.Characters.Conversions;
 with Templates_Parser;
+with Version;
+
 package body Generator is
 
    use Templates_Parser;
@@ -23,12 +25,11 @@ package body Generator is
       Targetpath : String;
       Linkpath : String)
    is
-
       Extension : String := Ada.Characters.Handling.To_Upper(Ada.Directories.Extension(Filepath));
    begin
       if Extension = "MD" or Extension = "MARKDOWN" then
          List.Append(Generator.Frontmatter.Read(Filepath, Targetpath, Linkpath));
-      elsif Extension = "HBS" then
+      elsif Extension = "TMPLT" then
          List.Append(Generator.Frontmatter.Read(Filepath, Targetpath, Linkpath));
       else
          Copy_File(Filepath, Targetpath);
@@ -185,7 +186,7 @@ package body Generator is
       -- Process blog
       if Exists(Blog_Source_Directory) then
          -- Copy static files and directories and create list of pages.
-         if not Exists(Blog_Source_Directory) then
+         if not Exists(Blog_Target_Directory) then
             Create_Directory(Blog_Target_Directory);
          end if;
          Process_Directory(Posts, Blog_Source_Directory, Blog_Target_Directory, "blog");
@@ -194,6 +195,10 @@ package body Generator is
       Insert(Set, Create_Vector(Documents, "PAGE"));
       Insert(Set, Create_Vector(Posts, "POST"));
       Insert(Set, Site_Set);
+
+      Insert(Set,  Assoc ("META_GENERATOR_LINK", Version.Link));
+      Insert(Set,  Assoc ("META_GENERATOR", Version.Name));
+      Insert(Set,  Assoc ("META_GENERATOR_VERSION", Version.Current));
 
       -- Process non-static files
       Process_Documents(Documents, Set, Layoutfolder, Source_Directory, Target_Directory);
