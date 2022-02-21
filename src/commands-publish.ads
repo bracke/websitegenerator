@@ -1,9 +1,10 @@
 with AAA.Strings;
 private with GNAT.Strings;
+with Globals;
 
 package Commands.Publish is
 
-type Instance
+   type Instance
    is new CLIC.Subcommand.Command
    with private;
 

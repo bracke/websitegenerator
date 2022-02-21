@@ -2,12 +2,14 @@
 <strong class="title">Table of Contents</strong>
 <ul>
 @@TABLE@@
+@@INLINE@@
 <li>
-@@IF@@ @_$1_@ = @_PAGENAME_@
+@@IF@@ @_$1_@ = @_PAGEPATH_@
 <a href="@_LOWER:PAGEPATH_@" class="active" aria-current="page">@_CAPITALIZE:PAGENAME_@</a>
 @@ELSE@@
 <a href="@_LOWER:PAGEPATH_@">@_CAPITALIZE:PAGENAME_@</a>
 @@END_IF@@
 </li>
+@@END_INLINE@@
 @@END_TABLE@@
 </ul></nav>

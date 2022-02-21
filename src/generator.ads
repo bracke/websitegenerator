@@ -32,6 +32,13 @@ package Generator is
      (Document);
    use Document_Container;
 
+   function "<"(Left, Right : Document) return boolean;
+
+   package Document_List_Sorting is new Document_Container.Generic_Sorting;
+   use Document_List_Sorting;
+
+
+
    Debug : boolean := false;
 
    procedure Start (Source_Directory : string; Target_Directory : string);

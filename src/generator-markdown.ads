@@ -1,6 +1,9 @@
+with Ada.Streams;
+with Ada.Streams.Stream_IO;
+
 package Generator.Markdown is
 
-   function To_HTML (Filepath : XString) return XString;
+   procedure To_HTML (Filein : in out Ada.Streams.Stream_IO.File_Type);
 
 private
 

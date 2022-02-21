@@ -1,5 +1,8 @@
 ---
 layout: default.tmplt
-title: Main page
+title: About
 ---
-Main content goes here.
+About content goes here.
+
+- A list item
+- Another list item.

@@ -86,7 +86,7 @@ package body Commands.Publish is
          Help        => "Selects a source folder other than the current directory");
 
       Define_Switch
-      (Config, Cmd.Delete_Target_Content'Access, "", "-d", "Delete content of the target folder before publishing into that folder");
+      (Config, Cmd.Delete_Target_Content'Access, "", "-d", M("Publish_Delete_Switch_Message"));
 
    end Setup_Switches;
 

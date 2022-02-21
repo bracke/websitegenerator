@@ -20,13 +20,13 @@ package body Init_Project is
 
   procedure Init (Path : String; ToDo: Action) is
     Blueprint_Folder      : String := Get_Blueprint_Folder;
-    App_Blueprint_Folder  : String := Compose (Blueprint_Folder, "app");
-    Blueprint             : String := "standard";
+    App_Blueprint_Folder  : String := Compose (Blueprint_Folder, "site");
+    Blueprint             : String := "simple";
     Blueprint_Path        : String := Compose (App_Blueprint_Folder, Blueprint);
     Name                  : String := Simple_Name (Path);
   begin
     Templates_Parser.Insert
-     (Commands.Translations, Templates_Parser.Assoc ("APPNAME", Name));
+     (Commands.Translations, Templates_Parser.Assoc ("SITENAME", Name));
 
     if Exists (Blueprint_Path) then
       IO.Put_Line

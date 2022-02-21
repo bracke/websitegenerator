@@ -5,9 +5,15 @@ with Ada.Text_IO;
 with Ada.Strings.Fixed;
 with Ada.Characters.Handling;
 with Generator.Frontmatter;
+--with Generator.Markdown;
 with Ada.Characters.Conversions;
 with Templates_Parser;
+with Ada.Text_IO.Text_Streams;
+with Ada.Streams;
+with Ada.Streams.Stream_IO;
+with Ada.Numerics.Discrete_Random;
 with Version;
+--with Instances;
 
 package body Generator is
 
@@ -15,6 +21,18 @@ package body Generator is
    use Ada.Directories;
    use Ada.Characters.Conversions;
    use Ada.Text_IO;
+
+ --  Renderer : Instances.Html_Stream.Renderer_Ref;
+
+   subtype Die is Integer range 1 .. 256;
+   subtype Dice is Integer range 2*Die'First .. 2*Die'Last;
+   package Random_Integer is new Ada.Numerics.Discrete_Random(Die);
+   use Random_Integer;
+
+   function "<"(Left, Right : Document) return boolean is
+   begin
+      return Left.Basename < Right.Basename;
+   end;
 
    ------------------
    -- Process_File --
@@ -27,11 +45,27 @@ package body Generator is
    is
       Extension : String := Ada.Characters.Handling.To_Upper(Ada.Directories.Extension(Filepath));
    begin
-      if Extension = "MD" or Extension = "MARKDOWN" then
+      if Extension = "MD" or else Extension = "MARKDOWN" then
          List.Append(Generator.Frontmatter.Read(Filepath, Targetpath, Linkpath));
+         declare
+            Filein : Ada.Streams.Stream_IO.File_Type;
+            Fileout : Ada.Text_IO.File_Type;
+         begin
+         null;
+            --Ada.Streams.Stream_IO.Open (Filein, Ada.Streams.Stream_IO.In_File, Filepath);
+           -- Ada.Text_IO.Create(Fileout, Ada.Text_IO.Out_File,Targetpath);
+           --   Renderer.Set_Output (Ada.Text_IO.Text_Streams.Stream(Fileout));
+            --Generator.Markdown.To_HTML(Filein);
+         end;
+      elsif Extension = "HTML" or else Extension = "HTM" then
+         List.Append(Generator.Frontmatter.Read(Filepath, Targetpath, Linkpath));
+
       elsif Extension = "TMPLT" then
          List.Append(Generator.Frontmatter.Read(Filepath, Targetpath, Linkpath));
       else
+         if Ada.Directories.Exists(Targetpath) then
+            Ada.Directories.Delete_File(Targetpath);
+         end if;
          Copy_File(Filepath, Targetpath);
       end if;
    end Process_File;
@@ -137,7 +171,7 @@ package body Generator is
    begin
       for Document of List loop
          declare
-            Assoc : association := Get(Document.T, "name");
+            Assoc : association := Get(Document.T, "title");
             Name : string := Get(Assoc);
             Base_Name : string := To_String(To_String(Document.Basename));
          begin
@@ -172,6 +206,9 @@ package body Generator is
 
       Set      : Translate_Set;
       Site_Set : Translate_Set;
+
+      G : Random_Integer.Generator;
+      D : Dice;
    begin
       Site_Set := Null_Set;
       if Exists(Config_Path) then
@@ -182,6 +219,7 @@ package body Generator is
 
       -- Copy static files and directories and create list of pages.
       Process_Directory(Documents, Source_Directory, Target_Directory, "");
+      Sort(Documents);
 
       -- Process blog
       if Exists(Blog_Source_Directory) then
@@ -191,6 +229,7 @@ package body Generator is
          end if;
          Process_Directory(Posts, Blog_Source_Directory, Blog_Target_Directory, "blog");
       end if;
+      Sort(Posts);
 
       Insert(Set, Create_Vector(Documents, "PAGE"));
       Insert(Set, Create_Vector(Posts, "POST"));
@@ -199,6 +238,9 @@ package body Generator is
       Insert(Set,  Assoc ("META_GENERATOR_LINK", Version.Link));
       Insert(Set,  Assoc ("META_GENERATOR", Version.Name));
       Insert(Set,  Assoc ("META_GENERATOR_VERSION", Version.Current));
+
+      Reset (G); D := Random(G);
+      Insert(Set,  Assoc ("META_CACHEBUSTER", Ada.Strings.Fixed.Trim(D'image, Ada.strings.Both)));
 
       -- Process non-static files
       Process_Documents(Documents, Set, Layoutfolder, Source_Directory, Target_Directory);

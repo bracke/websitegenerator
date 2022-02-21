@@ -38,10 +38,13 @@ package IO renames Ada.Text_IO;
      ("Import files.");
 
   overriding function Usage_Custom_Parameters (Cmd : Instance) return String is
-   ("");
+   ("{--rss|--folder} {url|path}");
 
 private
 
-  type Instance is new CLIC.Subcommand.Command with null record;
+  type Instance is new CLIC.Subcommand.Command with record
+   Rss   : aliased Boolean := False;
+   Folder: aliased Boolean := False;
+  end record;
 
 end Commands.Import;

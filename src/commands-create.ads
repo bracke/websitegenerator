@@ -21,7 +21,7 @@ package Commands.Create is
   overriding function Long_Description
    (Cmd : Instance) return AAA.Strings.Vector is
    (AAA.Strings.Empty_Vector.Append
-     ("Creates a new directory and runs websitegenerator init in it.")
+     ("Creates a new folder and runs websitegenerator init in it.")
      .New_Line
      );
 
@@ -30,10 +30,10 @@ package Commands.Create is
     Config : in out CLIC.Subcommand.Switches_Configuration);
 
   overriding function Short_Description (Cmd : Instance) return String is
-   ("Creates a new directory and runs websitegenerator init in it.");
+   ("Creates a new folder and runs websitegenerator init in it.");
 
   overriding function Usage_Custom_Parameters (Cmd : Instance) return String is
-   ("[-dry-run]");
+   ("<targetpath> [-dry-run]");
 
 private
 

@@ -29,7 +29,7 @@ package Commands.Generate is
    ("Generates new files from blueprints.");
 
   overriding function Usage_Custom_Parameters (Cmd : Instance) return String is
-   ("[-dry-run] ");
+   ("<blueprint> <name> [-dry-run] ");
 
 private
 

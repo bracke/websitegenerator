@@ -1,0 +1,42 @@
+@charset "UTF-8";
+.menu-burger > * {
+  position: absolute;
+  right: 0;
+}
+
+.menu-burger input {
+  height: 32px;
+  margin: 0;
+  opacity: 0;
+  width: 32px;
+  z-index: 3;
+}
+
+.menu-burger svg {
+  height: 32px;
+  width: 32px;
+  z-index: 2;
+  right: 0.5rem;
+}
+
+ul.menu-burger__item-list {
+  background: var(--main-bg-color);
+  bottom: 0;
+  color: var(--main-color);
+  list-style: none;
+  margin: 0;
+  padding: 32px;
+  top: 32px;
+  transform: translate(100%, 0);
+  transition: transform 0.5s cubic-bezier(0.9, 0, 0.1, 1);
+  width: 200px;
+  z-index: 1;
+}
+
+input:checked ~ .menu-burger__item-list {
+  transform: none;
+}
+
+.menu-burger input:checked ~ svg line {
+  stroke: #3c3836;
+}
