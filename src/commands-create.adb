@@ -3,6 +3,8 @@ with Ada.Directories;
 with Ada.Containers.Vectors;
 with Init_Project;
 with Blueprint; use Blueprint;
+with Ada.Command_Line;
+with Templates_Parser.Utils;
 
 package body Commands.Create is
 
@@ -31,19 +33,18 @@ package body Commands.Create is
           IO.Put_Line(TT.Emph("You specified the dry-run flag, so no changes will be written."));
           ToDo := DryRun;
         end if;
-
         if not Dir.Exists(Path) then
           if ToDo = Write then
             Dir.Create_Directory(Path);
           end if;
         end if;
+
         if Dir.Kind(Path) = Ada.Directories.Directory then
           Init_Project.Init(Path,ToDo);
         else
           IO.Put_Line(TT.Error(Path & " exists and is not a directory."));
         end if;
       end;
-
     else
       IO.Put_Line(TT.Error("Command requires a project name to be specified."));
     end if;

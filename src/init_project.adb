@@ -37,16 +37,16 @@ package body Init_Project is
       IO.New_Line;
       if Errors then
         IO.Put_Line
-         (TT.Warn ("Created project") & " " & TT.Bold (Name) & " " & "with errors.");
+         (TT.Warn ("Created site") & " " & TT.Bold (Name) & " " & "with errors.");
       else
-        IO.Put_Line (TT.Success( "Successfully created project") & " " & TT.Warn (TT.Bold (Name)));
+        IO.Put_Line (TT.Success( "Successfully created site") & " " & TT.Warn (TT.Bold (Name)));
       end if;
 
       IO.New_Line;
       IO.Put_Line
        (TT.Info
-         (TT.Description ("Build your project using") & " " &
-          TT.Terminal ("/scripts/build.sh")));
+         (TT.Description ("Build your site using") & " " &
+          TT.Terminal ("WebsiteGenerator publish")));
 
       IO.Put_Line
        (TT.Info

@@ -12,9 +12,9 @@ package Globals is
 
    use Integer_Hashed_Maps;
 
-   M : Map :=(
-      ("Publish_Delete_Switch_Message","Delete content of the target folder before publishing into that folder")
-   );
+ --  M : Map :=(
+ --     "Publish_Delete_Switch_Message" => "Delete content of the target folder before publishing into that folder"
+ --  );
 
    Blueprint_Folder_Name : string := "blueprints";
    Posts_Folder_Name : string := "_posts";

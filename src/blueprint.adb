@@ -5,6 +5,7 @@ with Templates_Parser;
 with CLIC.TTY;
 with Filesystem;
 with Commands;
+with Ada.Characters.Handling;
 
 package body Blueprint is
 
@@ -25,24 +26,33 @@ package body Blueprint is
     return Blueprint_Folder;
   end Get_Blueprint_Folder;
 
+   procedure Parse_Content(Source_File: String; Target : String) is
+
+     Processed_Content : String :=
+     Templates_Parser.Parse (Source_File, Commands.Translations);
+     File_Handle       : IO.File_Type;
+   begin
+      IO.Create (File_Handle, IO.Out_File, Target);
+      IO.Put (File_Handle, Processed_Content);
+      IO.Close (File_Handle);
+   end Parse_Content;
+
   procedure Process_File
    (Target : String; Search_Item : in Directory_Entry_Type; Todo: Action) is
 
     Source_File       : String := Full_Name (Directory_Entry => Search_Item);
-    Processed_Content : String :=
-     Templates_Parser.Parse (Source_File, Commands.Translations);
-    File_Handle       : IO.File_Type;
+    Extension : String := Ada.Characters.Handling.To_Upper(Ada.Directories.Extension(Source_File));
+
   begin
     IO.Put_Line (TT.Emph ("Create") & " " & Target);
+
     if Exists(Target) then
       Errors := true;
       IO.Put_Line
        (TT.Error ("A file allready exists at ") & " " & TT.Bold (Target) & " " & TT.Warn("Ignored"));
     else
       if Todo = Write then
-        IO.Create (File_Handle, IO.Out_File, Target);
-        IO.Put (File_Handle, Processed_Content);
-        IO.Close (File_Handle);
+         Copy_File(Source_File, Target);
       end if;
     end if;
   end Process_File;

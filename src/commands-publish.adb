@@ -26,6 +26,7 @@ package body Commands.Publish is
 
    package IO renames Ada.Text_IO;
    package TT renames CLIC.TTY;
+   package DIR renames Ada.Directories;
 
   -------------
   -- Execute --
@@ -35,36 +36,44 @@ package body Commands.Publish is
                       Args :        AAA.Strings.Vector)
   is
     ToDo : Action := Write;
-    Source : XString := To_XString(To_Wide_Wide_String(Ada.Directories.Current_Directory));
+    Source : XString := To_XString(To_Wide_Wide_String(DIR.Current_Directory));
+    Default_Target : string := DIR.Compose(
+      DIR.Current_Directory,
+      "_dist");
+    Target : XString := To_XString(To_Wide_Wide_String(Default_Target));
   begin
    if Args.Length > 0 then
-      if Cmd.Source.all /= "" then
-        Source := To_XString(To_Wide_Wide_String(Cmd.Source.all));
-      end if;
-      declare
-         Website_Source : String := Ada.Directories.Full_Name(To_String(To_String(Source)));
-         Website_Target : String :=
-         Ada.Directories.Full_Name (Args(1));
-      begin
+     Target := To_XString(To_Wide_Wide_String(DIR.Full_Name (Args(1))));
+   end if;
+
+   if Cmd.Source.all /= "" then
+      Source := To_XString(To_Wide_Wide_String(Cmd.Source.all));
+   end if;
+
+   declare
+      Website_Source : String := DIR.Full_Name(To_String(To_String(Source)));
+      Source_Layout_Folder : string := DIR.Compose(Website_Source, "_layouts");
+      Website_Target : String := DIR.Full_Name(To_String(To_String(Target)));
+   begin
+      if DIR.Exists(Source_Layout_Folder) then
          -- Delete result of last run
-         if Cmd.Delete_Target_Content and then Ada.Directories.Exists(Website_Target) then
-            Ada.Directories.Delete_Tree(Website_Target);
+         if Cmd.Delete_Target_Content and then DIR.Exists(Website_Target) then
+            DIR.Delete_Tree(Website_Target);
          end if;
-         if not Ada.Directories.Exists(Website_Target) then
-            Ada.Directories.Create_Directory(Website_Target);
+         if not DIR.Exists(Website_Target) then
+            DIR.Create_Directory(Website_Target);
          end if;
-         if Ada.Directories.Exists(Website_Source) then
+         if DIR.Exists(Website_Source) then
             Generator.Start (Website_Source, Website_Target);
-            Ada.Directories.Set_Directory (Directory => Website_Target);
+            DIR.Set_Directory (Directory => Website_Target);
             Server.Start_Server;
          else
             IO.Put_Line(TT.Error("Source folder (" & Website_Source & ") does not exist."));
          end if;
-      end;
-    else
-      IO.Put_Line(TT.Error("Command requires a target folder to be specified."));
-   end if;
-
+      else
+         IO.Put_Line(TT.Error("Source folder (" & Website_Source & ") is not a website. Please create a website using the " & TT.Emph ("websitegenerator new <name>") & " command."));
+      end if;
+   end;
   end Execute;
 
    --------------------
@@ -86,7 +95,7 @@ package body Commands.Publish is
          Help        => "Selects a source folder other than the current directory");
 
       Define_Switch
-      (Config, Cmd.Delete_Target_Content'Access, "", "-d", M("Publish_Delete_Switch_Message"));
+      (Config, Cmd.Delete_Target_Content'Access, "", "-d", "Publish_Delete_Switch_Message");
 
    end Setup_Switches;
 

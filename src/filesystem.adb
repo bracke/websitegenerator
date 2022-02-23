@@ -1,6 +1,7 @@
 with Ada.Command_Line;
 with Ada.Directories; use Ada.Directories;
 with Ada.Text_IO;
+with Templates_Parser.Utils;
 
 package body Filesystem is
 
@@ -84,11 +85,9 @@ package body Filesystem is
     return Simple /= ".." and then Simple /= ".";
   end Is_Valid_File;
 
-  -- TODO: Test/Implement Get_Executable_Path on windows
-  -- use GNAT.oslib
   function Get_Executable_Path return String is
   begin
-    return Ada.Command_Line.Command_Name;
+    return Templates_Parser.Utils.Get_Program_Directory;
   end Get_Executable_Path;
 
 end Filesystem;
