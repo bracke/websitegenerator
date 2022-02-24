@@ -19,6 +19,8 @@ package Globals is
    Blueprint_Folder_Name : string := "blueprints";
    Posts_Folder_Name : string := "_posts";
    Layout_Folder_Name : string := "_layouts";
+   Dist_Folder_Name : string := "_dist";
+   Blog_Folder_Name : string := "blog";
    Site_Configuration_Name : string := "_site.cfg";
 
 

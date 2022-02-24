@@ -6,6 +6,7 @@ with CLIC.TTY;
 with Filesystem;
 with Commands;
 with Ada.Characters.Handling;
+with Globals;
 
 package body Blueprint is
 
@@ -21,7 +22,7 @@ package body Blueprint is
     Executable_Location : String := FS.Get_Executable_Path;
     Root : String :=
      Containing_Directory(Containing_Directory (Executable_Location));
-    Blueprint_Folder : String := Compose (Root, "blueprints");
+    Blueprint_Folder : String := Compose (Root, Globals.Blueprint_Folder_Name);
   begin
     return Blueprint_Folder;
   end Get_Blueprint_Folder;

@@ -15,6 +15,9 @@ with Generator;
 with Ada.Characters.Conversions;
 with Ada.Directories;
 with Ada.Strings.Unbounded;
+with Globals;
+with Filesystem;
+with Ada.Strings.Fixed;
 
 package body Commands.Publish is
 
@@ -23,6 +26,7 @@ package body Commands.Publish is
    use Ada.Containers;
    use Generator.aString;
    use Ada.Strings.Unbounded;
+   use Ada.Directories;
 
    package IO renames Ada.Text_IO;
    package TT renames CLIC.TTY;
@@ -39,7 +43,7 @@ package body Commands.Publish is
     Source : XString := To_XString(To_Wide_Wide_String(DIR.Current_Directory));
     Default_Target : string := DIR.Compose(
       DIR.Current_Directory,
-      "_dist");
+      Globals.Dist_Folder_Name);
     Target : XString := To_XString(To_Wide_Wide_String(Default_Target));
   begin
    if Args.Length > 0 then
@@ -52,26 +56,41 @@ package body Commands.Publish is
 
    declare
       Website_Source : String := DIR.Full_Name(To_String(To_String(Source)));
-      Source_Layout_Folder : string := DIR.Compose(Website_Source, "_layouts");
+      Source_Layout_Folder : string := DIR.Compose(Website_Source, Globals.Layout_Folder_Name);
       Website_Target : String := DIR.Full_Name(To_String(To_String(Target)));
    begin
-      if DIR.Exists(Source_Layout_Folder) then
-         -- Delete result of last run
-         if Cmd.Delete_Target_Content and then DIR.Exists(Website_Target) then
-            DIR.Delete_Tree(Website_Target);
-         end if;
-         if not DIR.Exists(Website_Target) then
-            DIR.Create_Directory(Website_Target);
-         end if;
-         if DIR.Exists(Website_Source) then
-            Generator.Start (Website_Source, Website_Target);
-            DIR.Set_Directory (Directory => Website_Target);
-            Server.Start_Server;
+      if DIR.Kind(Website_Source) = Directory then
+         if DIR.Exists(Source_Layout_Folder) then
+            -- Delete result of last run
+            if Cmd.Delete_Target_Content and then DIR.Exists(Website_Target) then
+               DIR.Delete_Tree(Website_Target);
+            end if;
+
+            if not DIR.Exists(Website_Target) then
+               DIR.Create_Directory(Website_Target);
+            end if;
+
+            if DIR.Kind(Website_Target) = Directory then
+               if DIR.Exists(Website_Source) then
+                  if not Filesystem.Is_Subfolder(Website_Source,Website_Target) or else Ada.Strings.Fixed.Head(DIR.Base_Name(Website_Target),1) = "_" then
+
+                     Generator.Start (Website_Source, Website_Target);
+                     DIR.Set_Directory (Directory => Website_Target);
+                     Server.Start_Server;
+                  else
+                     IO.Put_Line(TT.Error("Publish target may not be inside the source folder or must be prefixed with and underscore."));
+                  end if;
+               else
+                  IO.Put_Line(TT.Error("Source folder (" & Website_Source & ") does not exist."));
+               end if;
+            else
+               IO.Put_Line(TT.Error("Target (" & Website_Target & ") is not a folder."));
+            end if;
          else
-            IO.Put_Line(TT.Error("Source folder (" & Website_Source & ") does not exist."));
+            IO.Put_Line(TT.Error("Source folder (" & Website_Source & ") is not a website. Please create a website using the " & TT.Emph ("websitegenerator new <name>") & " command."));
          end if;
       else
-         IO.Put_Line(TT.Error("Source folder (" & Website_Source & ") is not a website. Please create a website using the " & TT.Emph ("websitegenerator new <name>") & " command."));
+         IO.Put_Line(TT.Error("Source (" & Website_Source & ") is not a folder."));
       end if;
    end;
   end Execute;

@@ -34,7 +34,7 @@ package Commands.Publish is
    ("Publish the website to the target folder.");
 
   overriding function Usage_Custom_Parameters (Cmd : Instance) return String is
-   ("<target folderpath> [--source <folderpath>] [-d]");
+   ("[targetfolder] [--source <folderpath>] [-d]");
 
 private
 

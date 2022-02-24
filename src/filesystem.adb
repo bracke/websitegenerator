@@ -2,6 +2,7 @@ with Ada.Command_Line;
 with Ada.Directories; use Ada.Directories;
 with Ada.Text_IO;
 with Templates_Parser.Utils;
+with Ada.Directories.Hierarchical_File_Names;
 
 package body Filesystem is
 
@@ -89,5 +90,23 @@ package body Filesystem is
   begin
     return Templates_Parser.Utils.Get_Program_Directory;
   end Get_Executable_Path;
+
+  function Is_Subfolder(Parent: string; Sub: String) return boolean is
+
+      Parent_Full : string := Full_Name(Parent);
+      Sub_Full : string := Full_Name(Sub);
+
+  begin
+      if Parent_Full = Sub_Full then
+         return true;
+      end if;
+
+      if Ada.Directories.Hierarchical_File_Names.Is_Root_Directory_Name(Sub_Full) then
+         return false;
+      end if;
+
+      return Is_Subfolder(Parent, Containing_Directory(Sub_Full));
+
+  end Is_Subfolder;
 
 end Filesystem;

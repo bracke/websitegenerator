@@ -13,6 +13,7 @@ with Ada.Streams;
 with Ada.Streams.Stream_IO;
 with Ada.Numerics.Discrete_Random;
 with Version;
+with Globals;
 --with Instances;
 
 package body Generator is
@@ -195,11 +196,11 @@ package body Generator is
    -----------
    procedure Start (Source_Directory : String; Target_Directory: String) is
 
-      Config_Path : String := Ada.Directories.Compose(Source_Directory, "_site.cfg");
-      Layoutfolder: String := Compose(Source_Directory, "_layouts");
+      Config_Path : String := Ada.Directories.Compose(Source_Directory, Globals.Site_Configuration_Name);
+      Layoutfolder: String := Compose(Source_Directory, Globals.Layout_Folder_Name);
 
-      Blog_Source_Directory : string := Compose(Source_Directory, "_posts");
-      Blog_Target_Directory : string := Compose(Target_Directory, "blog");
+      Blog_Source_Directory : string := Compose(Source_Directory, Globals.Posts_Folder_Name);
+      Blog_Target_Directory : string := Compose(Target_Directory,Globals.Blog_Folder_Name);
 
       Documents   : Document_Container.list;
       Posts       : Document_Container.list;
@@ -227,7 +228,7 @@ package body Generator is
          if not Exists(Blog_Target_Directory) then
             Create_Directory(Blog_Target_Directory);
          end if;
-         Process_Directory(Posts, Blog_Source_Directory, Blog_Target_Directory, "blog");
+         Process_Directory(Posts, Blog_Source_Directory, Blog_Target_Directory, Globals.Blog_Folder_Name);
       end if;
       Sort(Posts);
 

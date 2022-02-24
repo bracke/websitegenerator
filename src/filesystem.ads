@@ -10,6 +10,8 @@ package Filesystem is
 
   function Get_Executable_Path return String;
 
+  function Is_Subfolder(Parent: string; Sub: String) return boolean;
+
 private
 
 end Filesystem;
