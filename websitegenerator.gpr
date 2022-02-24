@@ -83,4 +83,10 @@ project Websitegenerator is
     for Artifacts ("blueprints") use ("blueprints/*");
   end Install;
 
+
+      package Builder is
+         for Executable ("websitegenerator.adb") use "wg";
+      end Builder;
+
+
 end Websitegenerator;
