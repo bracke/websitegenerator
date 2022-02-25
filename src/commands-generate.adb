@@ -21,7 +21,7 @@ package body Commands.Generate is
  function Target_Folder_Name(ItemType: string) return string is
  begin
    if ItemType = "POST" then
-      return Globals.Posts_Folder_Name;
+      return Globals.Posts_Source_Folder_Name;
    elsif ItemType = "PAGE" then
       return Globals.Pages_Folder_Name;
    elsif ItemType = "LAYOUT" then
@@ -85,9 +85,9 @@ package body Commands.Generate is
     Description.New_Line;
     Description.Append(TT.Underline("Available blueprints"));
 
-    for A_Blueprint of Blueprints loop
-      Append(Description, TT.Emph (A_Blueprint));
-    end loop;
+   Append(Description, TT.Emph ("page"));
+   Append(Description, TT.Emph ("post"));
+   Append(Description, TT.Emph ("layout"));
 
     return Description;
 

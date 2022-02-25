@@ -17,11 +17,11 @@ package Globals is
  --  );
 
    Blueprint_Folder_Name : string := "blueprints";
-   Posts_Folder_Name : string := "_posts";
+   Posts_Source_Folder_Name : string := "_posts";
    Pages_Folder_Name : string := "pages";
    Layout_Folder_Name : string := "_layouts";
    Dist_Folder_Name : string := "_dist";
-   Blog_Folder_Name : string := "blog";
+   Blog_Target_Folder_Name : string := "blog";
    Site_Configuration_Name : string := "_site.cfg";
 
 

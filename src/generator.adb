@@ -199,8 +199,8 @@ package body Generator is
       Config_Path : String := Ada.Directories.Compose(Source_Directory, Globals.Site_Configuration_Name);
       Layoutfolder: String := Compose(Source_Directory, Globals.Layout_Folder_Name);
 
-      Blog_Source_Directory : string := Compose(Source_Directory, Globals.Posts_Folder_Name);
-      Blog_Target_Directory : string := Compose(Target_Directory,Globals.Blog_Folder_Name);
+      Blog_Source_Directory : string := Compose(Source_Directory, Globals.Posts_Source_Folder_Name);
+      Blog_Target_Directory : string := Compose(Target_Directory,Globals.Blog_Target_Folder_Name);
 
       Documents   : Document_Container.list;
       Posts       : Document_Container.list;
@@ -228,7 +228,7 @@ package body Generator is
          if not Exists(Blog_Target_Directory) then
             Create_Directory(Blog_Target_Directory);
          end if;
-         Process_Directory(Posts, Blog_Source_Directory, Blog_Target_Directory, Globals.Blog_Folder_Name);
+         Process_Directory(Posts, Blog_Source_Directory, Blog_Target_Directory, Globals.Blog_Target_Folder_Name);
       end if;
       Sort(Posts);
 
