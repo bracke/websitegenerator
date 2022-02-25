@@ -5,8 +5,8 @@ private with GNAT.Strings;
 
 package Commands.Deploy is
 
-package IO renames Ada.Text_IO;
-  package TT renames CLIC.TTY;
+   package IO renames Ada.Text_IO;
+   package TT renames CLIC.TTY;
 
    type Instance
    is new CLIC.Subcommand.Command
