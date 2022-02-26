@@ -30,7 +30,7 @@
 @@END_IF@@
 
 <link rel="canonical" href="@_site_base_@@_linkpath_@" />
-
+<link href="@_ATOMFEEDURL_@" type="application/atom+xml" rel="alternate" title="Sitewide Atom feed" />
 <!-- Favicons -->
 <link rel="apple-touch-icon" href="/images/apple-touch-icon.png" sizes="180x180">
 <link rel="icon" href="/images/favicon-32x32.png" sizes="32x32" type="image/png">

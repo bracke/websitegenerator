@@ -41,6 +41,8 @@ package Generator is
 
    Debug : boolean := false;
 
+   function Read_From_Set(Set : Translate_Set; Token: string) return string;
+
    procedure Start (Source_Directory : string; Target_Directory : string);
 
 private

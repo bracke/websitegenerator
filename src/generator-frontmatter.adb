@@ -1,10 +1,14 @@
 pragma Ada_2012;
+with GNAT.Regexp;     use GNAT.Regexp;
 with Ada.Directories;
 with Ada.Characters.Conversions;
 with Ada.Text_IO;
 with GNATCOLL.Mmap;
 with Templates_Parser;
 with GNAT.Strings;
+with Generator;
+with Ada.Strings.Fixed;
+with Globals;
 
 package body Generator.Frontmatter is
 
@@ -14,13 +18,44 @@ package body Generator.Frontmatter is
    use Templates_Parser;
    use GNAT.Strings;
 
+   package DIR renames Ada.Directories;
+
  --  whitespace : constant Character_Set := To_Set (' ' & ASCII.LF & ASCII.HT & ASCII.CR);
 
    WW_HT : constant Wide_Wide_Character := To_Wide_Wide_Character (ASCII.HT);
    WW_LF : constant Wide_Wide_Character := To_Wide_Wide_Character (ASCII.LF);
    WW_CR : constant Wide_Wide_Character := To_Wide_Wide_Character (ASCII.CR);
 
+   function Read_Excerpt(Content: string; Excerpt_Separator: string) return string is
+   begin
+      if Excerpt_Separator /= "" and then
+         Ada.Strings.Fixed.Index(Content, Excerpt_Separator) /= 0 then
+
+         return Ada.Strings.Fixed.Head(Content, Ada.Strings.Fixed.Index(Content, Excerpt_Separator));
+
+      elsif Ada.Strings.Fixed.Index(Content, Globals.Excerpt_Separator) /= 0 then
+
+         return Ada.Strings.Fixed.Head(Content, Ada.Strings.Fixed.Index(Content, Globals.Excerpt_Separator));
+
+      end if;
+
+      return Ada.Strings.Fixed.Head(Content, Ada.Strings.Fixed.Index(Content, "" & ASCII.LF));
+
+   end Read_Excerpt;
+
+   function Read_CreateDate(Filename: String) return String is
+      Re : constant Regexp := Compile ("([0-9]{4})-?(1[0-2]|0[1-9])", Glob => True);
+   begin
+      if Match (Filename, Re) then
+         return Filename(Filename'First..Filename'First+10);
+      end if;
+      return "";
+   end Read_CreateDate;
+
    procedure Read_Content(Filepath: String; T: in out Translate_Set) is
+
+      Basename      : constant string           := DIR.Base_Name(Filepath);
+      Created_Date  : constant string           := Read_CreateDate(Basename);
 
       Source_File   : Mapped_File               := Open_Read (Filepath);
       Source_Region : constant Mapped_Region    := Read (Source_File);
@@ -86,6 +121,33 @@ package body Generator.Frontmatter is
                         To_String(To_String(Source))
                      )
                   );
+      end if;
+
+      Insert (T,
+               Assoc ("summary",
+                     Read_Excerpt(Generator.Read_From_Set(T, "content"),
+                     Generator.Read_From_Set(T, "excerpt_separator"))
+               )
+            );
+
+      if Generator.Read_From_Set(T, "created") /= "" then
+
+         Insert (T, Assoc ("created",
+                  Generator.Read_From_Set(T, "created")
+         ));
+
+      elsif Created_Date /= "" then
+
+         Insert (T, Assoc ("created", Created_Date));
+
+      end if;
+
+      if Generator.Read_From_Set(T, "created") = "" then
+
+         Insert (T, Assoc ("updated",
+            Generator.Read_From_Set(T, "created")
+         ));
+
       end if;
 
    end Read_Content;

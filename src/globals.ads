@@ -16,14 +16,14 @@ package Globals is
  --     "Publish_Delete_Switch_Message" => "Delete content of the target folder before publishing into that folder"
  --  );
 
-   Blueprint_Folder_Name : string := "blueprints";
-   Posts_Source_Folder_Name : string := "_posts";
-   Pages_Folder_Name : string := "pages";
-   Layout_Folder_Name : string := "_layouts";
-   Dist_Folder_Name : string := "_dist";
-   Blog_Target_Folder_Name : string := "blog";
-   Site_Configuration_Name : string := "_site.cfg";
-
-
+   Blueprint_Folder_Name      : constant string := "blueprints";
+   Posts_Source_Folder_Name   : constant string := "_posts";
+   Pages_Folder_Name          : constant string := "pages";
+   Layout_Folder_Name         : constant string := "_layouts";
+   Dist_Folder_Name           : constant string := "_dist";
+   Blog_Target_Folder_Name    : constant string := "blog";
+   Feed_filename              : constant string := "rssfeed.xml";
+   Site_Configuration_Name    : constant string := "_site.cfg";
+   Excerpt_Separator          : constant string := "<!--more-->";
 
 end Globals;

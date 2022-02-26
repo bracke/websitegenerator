@@ -1,10 +1,10 @@
 pragma Ada_2012;
-with Generator.Configuration;
 with Ada.Directories;
 with Ada.Text_IO;
 with Ada.Strings.Fixed;
 with Ada.Characters.Handling;
 with Generator.Frontmatter;
+with Generator.Rssfeed;
 --with Generator.Markdown;
 with Ada.Characters.Conversions;
 with Templates_Parser;
@@ -191,6 +191,16 @@ package body Generator is
       return Set;
    end Create_Vector;
 
+   function Read_From_Set(Set : Translate_Set; Token: string) return string is
+
+    Assoc : association := Get(Set,Token);
+    begin
+      if Assoc /= Null_Association then
+         return Get(Assoc);
+      end if;
+      return "";
+    end Read_From_Set;
+
    -----------
    -- Start --
    -----------
@@ -243,9 +253,13 @@ package body Generator is
       Reset (G); D := Random(G);
       Insert(Set,  Assoc ("META_CACHEBUSTER", Ada.Strings.Fixed.Trim(D'image, Ada.strings.Both)));
 
+      -- Create RSS feed
+      Insert(Set,  Assoc ("ATOMFEEDURL", Generator.Rssfeed.Create(Posts,Target_Directory,Site_Set)));
+
       -- Process non-static files
       Process_Documents(Documents, Set, Layoutfolder, Source_Directory, Target_Directory);
       Process_Documents(Posts, Set, Layoutfolder, Blog_Source_Directory,Blog_Target_Directory);
+
 
    end Start;
 

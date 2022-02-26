@@ -1,0 +1,61 @@
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+@@INLINE@@
+@@IF@@ @_EXIST:description_@
+<meta name="description" content="@_description_@">
+@@ELSE@@
+<meta name="description" content="@_site_description_@">
+@@END_IF@@
+@@END_INLINE@@
+@@INLINE@@
+<title>
+@@IF@@ @_EXIST:title_@
+@_title_@ |
+@@END_IF@@
+@_site_name_@
+</title>
+@@END_INLINE@@
+<meta name="theme-color" content="@_site_theme_color_@" >
+<meta name="generator" content="@_META_GENERATOR_@ @_META_GENERATOR_VERSION_@" >
+<meta name="google-site-verification" content="@_site_google_verification_@">
+<meta name="apple-mobile-web-app-title" content="@_site_name_@">
+<meta name="author" content="@_site_author_@">
+<meta name="robots" content="index,follow">
+@@IF@@ @_EXIST:keywords_@
+<meta name="keywords" content="@_keywords_@">
+@@ELSE@@
+<meta name="keywords" content="@_site_keywords_@">
+@@END_IF@@
+
+<link rel="canonical" href="@_site_base_@@_linkpath_@" />
+<link href="@_ATOMFEEDURL_@" type="application/atom+xml" rel="alternate" title="Sitewide Atom feed" />
+<!-- Favicons -->
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png" sizes="180x180">
+<link rel="icon" href="/images/favicon-32x32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="/images/favicon-16x16.png" sizes="16x16" type="image/png">
+<link rel="manifest" href="/images/manifest.json">
+<link rel="icon" href="/images/favicon.ico">
+<link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="@_site_theme_color_@">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@_site_twitter_site_@">
+<meta name="twitter:creator" content="@_site_twitter_creator_@">
+<meta name="twitter:title" content="@_title_@">
+<meta name="twitter:description" content="@_description_@">
+<meta name="twitter:image" content="@_site_twitter_image_@">
+
+<!-- Facebook -->
+<meta property="og:url" content="@_site_base_@@_linkpath_@">
+<meta property="og:title" content="@_title_@">
+<meta property="og:description" content="@_description_@">
+<meta property="og:type" content="article">
+<meta property="og:image" content="@_site_facebook_image_@">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="@_site_facebook_image_width_@">
+<meta property="og:image:height" content="@_site_facebook_image_height_@">
+
+<link rel="stylesheet" href="/css/main.css?rnr=@_META_CACHEBUSTER_@">
+</head>

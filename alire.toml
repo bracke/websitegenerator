@@ -15,3 +15,5 @@ gnatcoll = "^21.0.0"  # Added by alr
 clic = "~0.2.0"  # Added by alr
 [[depends-on]]  # Added by alr
 aaa = "~0.2.4"  # Added by alr
+[[depends-on]]  # Added by alr
+xmlada = "^21.0.0"  # Added by alr
