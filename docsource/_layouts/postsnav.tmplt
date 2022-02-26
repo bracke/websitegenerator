@@ -4,9 +4,9 @@
 @@TABLE@@
 <li>
 @@IF@@ @_$1_@ = @_POSTPATH_@
-<a href="/@_LOWER:POSTPATH_@" class="active">@_CAPITALIZE:POSTNAME_@</a>
+<a href="@_site_base_@@_LOWER:POSTPATH_@" class="active">@_CAPITALIZE:POSTNAME_@</a>
 @@ELSE@@
-<a href="/@_LOWER:POSTPATH_@">@_CAPITALIZE:POSTNAME_@</a>
+<a href="@_site_base_@@_LOWER:POSTPATH_@">@_CAPITALIZE:POSTNAME_@</a>
 @@END_IF@@
 </li>
 @@END_TABLE@@
