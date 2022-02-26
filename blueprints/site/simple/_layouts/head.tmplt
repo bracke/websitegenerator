@@ -32,12 +32,12 @@
 <link rel="canonical" href="@_site_base_@@_linkpath_@" />
 <link href="@_ATOMFEEDURL_@" type="application/atom+xml" rel="alternate" title="Sitewide Atom feed" />
 <!-- Favicons -->
-<link rel="apple-touch-icon" href="/images/apple-touch-icon.png" sizes="180x180">
-<link rel="icon" href="/images/favicon-32x32.png" sizes="32x32" type="image/png">
-<link rel="icon" href="/images/favicon-16x16.png" sizes="16x16" type="image/png">
-<link rel="manifest" href="/images/manifest.json">
-<link rel="icon" href="/images/favicon.ico">
-<link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="@_site_theme_color_@">
+<link rel="apple-touch-icon" href="@_site_base_@/images/apple-touch-icon.png" sizes="180x180">
+<link rel="icon" href="@_site_base_@/images/favicon-32x32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="@_site_base_@/images/favicon-16x16.png" sizes="16x16" type="image/png">
+<link rel="manifest" href="@_site_base_@/images/manifest.json">
+<link rel="icon" href="@_site_base_@/images/favicon.ico">
+<link rel="mask-icon" href="@_site_base_@/images/safari-pinned-tab.svg" color="@_site_theme_color_@">
 
 <!-- Twitter -->
 <meta name="twitter:card" content="summary">
@@ -57,5 +57,5 @@
 <meta property="og:image:width" content="@_site_facebook_image_width_@">
 <meta property="og:image:height" content="@_site_facebook_image_height_@">
 
-<link rel="stylesheet" href="/css/main.css?rnr=@_META_CACHEBUSTER_@">
+<link rel="stylesheet" href="@_site_base_@/css/main.css?rnr=@_META_CACHEBUSTER_@">
 </head>
