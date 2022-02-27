@@ -1,6 +1,6 @@
 ---
 layout: default.tmplt
-title: @_NAME_@
+title: First Post!
 description:
 summary:
 keywords:

@@ -15,6 +15,7 @@
   opacity: 0;
   width: 32px;
   z-index: 3;
+  cursor: pointer;
 }
 
 .menu-burger svg {

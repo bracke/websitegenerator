@@ -75,6 +75,7 @@ package body Commands.Publish is
                   if not Filesystem.Is_Subfolder(Website_Source,Website_Target) or else Ada.Strings.Fixed.Head(DIR.Base_Name(Website_Target),1) = "_" then
 
                      Generator.Start (Website_Source, Website_Target);
+                     IO.Put_Line("Website_Target: " & Website_Target);
                      DIR.Set_Directory (Directory => Website_Target);
                      Server.Start_Server;
                   else

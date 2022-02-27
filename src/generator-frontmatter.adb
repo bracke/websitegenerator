@@ -74,7 +74,10 @@ package body Generator.Frontmatter is
       if To_String(To_String(Line.Head(3))) = Globals.Front_Matter_Deliminator then
          loop
             Position := Source.Find(WW_LF,Start);
-            exit when Position = 0;
+            if Position = 0 then
+               Position := Length(Line);
+               exit;
+            end if;
 
             Line := Source.Slice(Start, Position);
             Start := Position + 1;
