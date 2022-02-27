@@ -23,7 +23,7 @@ package body Commands.Init is
       ToDo := DryRun;
     end if;
 
-    Init_Project.Init(Ada.Directories.Current_Directory,ToDo);
+    Init_Project.Init(Ada.Directories.Current_Directory, Cmd.Blueprint.all,ToDo);
   end Execute;
 
    --------------------
@@ -37,6 +37,13 @@ package body Commands.Init is
    is
       use CLIC.Subcommand;
    begin
+      Define_Switch
+        (Config      => Config,
+         Output      => Cmd.Blueprint'Access,
+         Argument    => "NAME",
+         Long_Switch => "--source=",
+         Help        => "Selects a blueprint other than the default");
+
       Define_Switch
       (Config, Cmd.Dry_Run'Access, "", "-dry-run", "Dry-run");
 

@@ -33,12 +33,13 @@ package Commands.Init is
    ("Initializes a new website in the current folder.");
 
   overriding function Usage_Custom_Parameters (Cmd : Instance) return String is
-   ("[-dry-run]");
+   ("[-dry-run] [--blueprint <name>]");
 
 private
 
   type Instance is new CLIC.Subcommand.Command with record
     Dry_Run : aliased Boolean := False;
+    Blueprint : aliased GNAT.Strings.String_Access;
   end record;
 
 end Commands.Init;

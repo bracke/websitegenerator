@@ -17,6 +17,8 @@ package Globals is
  --  );
 
    Blueprint_Folder_Name      : constant string := "blueprints";
+   Blueprint_Default          : constant String := "simple";
+
    Posts_Source_Folder_Name   : constant string := "_posts";
    Pages_Folder_Name          : constant string := "pages";
    Layout_Folder_Name         : constant string := "_layouts";

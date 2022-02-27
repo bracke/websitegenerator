@@ -33,12 +33,13 @@ package Commands.Create is
    ("Creates a new folder and runs websitegenerator init in it.");
 
   overriding function Usage_Custom_Parameters (Cmd : Instance) return String is
-   ("<targetpath> [-dry-run]");
+   ("<targetpath> [-dry-run] [--blueprint <name>]");
 
 private
 
    type Instance is new CLIC.Subcommand.Command with record
     Dry_Run : aliased Boolean := False;
+    Blueprint : aliased GNAT.Strings.String_Access;
   end record;
 
 end Commands.Create;

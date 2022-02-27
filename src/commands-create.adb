@@ -40,7 +40,7 @@ package body Commands.Create is
         end if;
 
         if Dir.Kind(Path) = Ada.Directories.Directory then
-          Init_Project.Init(Path,ToDo);
+          Init_Project.Init(Path,Cmd.Blueprint.all,ToDo);
         else
           IO.Put_Line(TT.Error(Path & " exists and is not a directory."));
         end if;
@@ -62,6 +62,13 @@ package body Commands.Create is
    is
       use CLIC.Subcommand;
    begin
+      Define_Switch
+        (Config      => Config,
+         Output      => Cmd.Blueprint'Access,
+         Argument    => "NAME",
+         Long_Switch => "--source=",
+         Help        => "Selects a blueprint other than the default");
+
       Define_Switch
       (Config, Cmd.Dry_Run'Access, "", "-dry-run", "Dry-run");
 
