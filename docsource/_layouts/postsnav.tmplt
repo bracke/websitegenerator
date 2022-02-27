@@ -1,12 +1,21 @@
 <nav>
+@@IF@@ @_$1_@ = @_postpath_@
+  @@IF@@ @_EXIST:previous_link_@
+   <a href="@_previous_link_@">Previous</a>
+  @@END_IF@@
+  @@IF@@ @_EXIST:next_link_@
+   <a href="@_next_link_@">Next</a>
+  @@END_IF@@
+@@END_IF@@
+
 <strong class="title">Blog</strong>
 <ul>
 @@TABLE@@
 <li>
-@@IF@@ @_$1_@ = @_POSTPATH_@
-<a href="@_site_base_@@_LOWER:POSTPATH_@" class="active">@_CAPITALIZE:POSTNAME_@</a>
+@@IF@@ @_$1_@ = @_postpath_@
+<a href="@_site_base_@/@_LOWER:postpath_@" class="active">@_CAPITALIZE:postname_@</a>
 @@ELSE@@
-<a href="@_site_base_@@_LOWER:POSTPATH_@">@_CAPITALIZE:POSTNAME_@</a>
+<a href="@_site_base_@/@_LOWER:postpath_@">@_CAPITALIZE:postname_@</a>
 @@END_IF@@
 </li>
 @@END_TABLE@@

@@ -1,4 +1,9 @@
 @charset "UTF-8";
+.menu-burger
+{
+   cursor: pointer;
+}
+
 .menu-burger > * {
   position: absolute;
   right: 0;

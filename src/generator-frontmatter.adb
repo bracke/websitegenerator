@@ -71,14 +71,14 @@ package body Generator.Frontmatter is
       Line := Source.Slice(Start, Position);
       Start := Position + 1;
 
-      if Line.Head(3) = "---" then
+      if To_String(To_String(Line.Head(3))) = Globals.Front_Matter_Deliminator then
          loop
             Position := Source.Find(WW_LF,Start);
             exit when Position = 0;
 
             Line := Source.Slice(Start, Position);
             Start := Position + 1;
-            exit when Line.Head(3) = "---" ;
+            exit when To_String(To_String(Line.Head(3))) = Globals.Front_Matter_Deliminator;
 
             Equal_Position := Line.Find(":");
 
@@ -161,7 +161,7 @@ package body Generator.Frontmatter is
 
       Containing_Directory : string := Ada.Directories.Containing_Directory(Targetpath);
       Base_Name : string := Ada.Directories.Base_Name(Targetpath);
-      Targetname : string := Ada.Directories.Compose(Containing_Directory,Base_Name, "html");
+      Targetname : string := Ada.Directories.Compose(Containing_Directory,Base_Name, Globals.HTML_Filetype);
       Filename : string := Ada.Directories.Compose("",Base_Name, "html");
    begin
       aDocument.Filepath   := To_XString(To_Wide_Wide_String(Filepath));

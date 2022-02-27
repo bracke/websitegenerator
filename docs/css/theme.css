@@ -10,5 +10,7 @@
    --main-bg-color: white;
    --footer-bg-color: rgb(248,249,250);
 
+   --header-bg-color: hotpink;
+   --header-color: white;
    --code-color: #d63384;
 }

@@ -14,6 +14,7 @@ with Ada.Streams.Stream_IO;
 with Ada.Numerics.Discrete_Random;
 with Version;
 with Globals;
+with Ada.Strings.Maps;
 --with Instances;
 
 package body Generator is
@@ -78,9 +79,9 @@ package body Generator is
      (List              : out Document_Container.list;
      Source_Directory   : String;
       Target_Directory  : String;
-      Linkpath          : String)
+      LinkpathIn        : String)
    is
-
+Linkpath: string := Ada.Strings.Fixed.Trim(LinkpathIn, Ada.Strings.Maps.To_Set("/"),Ada.Strings.Maps.To_Set("/"));
       Dir : Directory_Entry_Type;
       Dir_Search : Search_Type;
    begin
@@ -98,8 +99,7 @@ package body Generator is
                   Fullname : String := Full_Name(Dir);
                   Targetname : String := Compose(Target_Directory, Name);
                   Basename : String := Ada.Directories.Base_Name(Fullname);
-                  Process : Boolean :=  Name /= "." and Name /= ".." and
-                              Ada.Strings.Fixed.Head(Name,1) /= "_";
+                  Process : Boolean :=  Name /= "." and Name /= ".." and Ada.Strings.Fixed.Head(Name,1) /= "_";
                begin
                   if Process then
                      if Debug then
@@ -125,23 +125,44 @@ package body Generator is
       end if;
    end Process_Directory;
 
+   function Get_Nav_Links(Document: Cursor; List : Document_Container.list) return Translate_Set is
+
+      Set : Translate_Set;
+      P : Cursor := Previous(Document);
+      N : Cursor := Next(Document);
+   begin
+      if P /= No_Element then
+         Insert(Set, Assoc ("previous_link",
+                  To_String(To_String(Element(P).Linkpath))));
+      end if;
+
+      if N /= No_Element then
+         Insert(Set, Assoc ("next_link",
+                  To_String(To_String(Element(N).Linkpath))));
+      end if;
+
+      return Set;
+
+   end Get_Nav_Links;
+
    procedure Process_Documents(List : in Document_Container.list; Set:Translate_Set; Layoutfolder: String; Source_Directory : String; Targetpath: String) is
    begin
-      for Document of List loop
+      for Document in List.Iterate loop
          if Debug then
-            Ada.Text_IO.Put_Line(To_String(To_String(Document.Targetpath)));
+            Ada.Text_IO.Put_Line(To_String(To_String(Element(Document).Targetpath)));
          end if;
-         if Length(Document.Layout) > 0 then
+         if Length(Element(Document).Layout) > 0 then
             declare
-               Name : String := To_String(To_String(Document.Layout));
+               Name : String := To_String(To_String(Element(Document).Layout));
                Base_Name : String := Ada.Directories.Base_Name(Name);
                Extension : String := Ada.Directories.Extension(Name);
                Layoutfile : String := Ada.Directories.Compose(Layoutfolder, Base_Name, Extension);
                Combined_Set : Translate_Set;
-               Filename : String := To_String(To_String(Document.Targetpath));
+               Filename : String := To_String(To_String(Element(Document).Targetpath));
             begin
                Insert(Combined_Set, Set);
-               Insert(Combined_Set, Document.T);
+               Insert(Combined_Set, Element(Document).T);
+               Insert(Combined_Set, Get_Nav_Links(Document, List));
 
                if Ada.Directories.Exists(Layoutfile) then
 
@@ -158,7 +179,7 @@ package body Generator is
                end if;
             end;
          else
-            Ada.Text_IO.Put_Line("Layout for " & To_String(To_String(Document.Filepath)) & " is not defined");
+            Ada.Text_IO.Put_Line("Layout for " & To_String(To_String(Element(Document).Filepath)) & " is not defined");
          end if;
       end loop;
 
@@ -185,8 +206,8 @@ package body Generator is
             end if;
          end;
       end loop;
-      Insert (Set, Assoc (Prefix & "PATH", Pagepath));
-      Insert (Set, Assoc (Prefix & "NAME", Pagename));
+      Insert (Set, Assoc (Prefix & "path", Pagepath));
+      Insert (Set, Assoc (Prefix & "name", Pagename));
 
       return Set;
    end Create_Vector;
@@ -242,8 +263,8 @@ package body Generator is
       end if;
       Sort(Posts);
 
-      Insert(Set, Create_Vector(Documents, "PAGE"));
-      Insert(Set, Create_Vector(Posts, "POST"));
+      Insert(Set, Create_Vector(Documents, "page"));
+      Insert(Set, Create_Vector(Posts, "post"));
       Insert(Set, Site_Set);
 
       Insert(Set,  Assoc ("meta_generator_link", Version.Link));

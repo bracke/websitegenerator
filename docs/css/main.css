@@ -45,7 +45,7 @@ h1 {
    margin-block-start: 1em;
 }
 h1 a, h1 a:hover, h1 a:visited, h1 a:active, h1 a:focus {
-    color: var(--main-color);
+    color: var(--header-color);
     text-decoration: none;
 }
 h2 {
@@ -90,7 +90,8 @@ aside
 }
 header {
    padding: 1.5rem;
-   background-color: var(--main-bg-color);
+   background-color: var(--header-bg-color);
+   color: var(--header-color);
    border-bottom: 1px solid var(--main-border-color);
 }
 footer {

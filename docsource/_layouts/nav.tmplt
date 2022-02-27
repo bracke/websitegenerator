@@ -1,12 +1,21 @@
 <nav>
+@@IF@@ @_$1_@ = @_pagepath_@
+  @@IF@@ @_EXIST:previous_link_@
+   <a href="@_previous_link_@">Previous</a>
+  @@END_IF@@
+  @@IF@@ @_EXIST:next_link_@
+   <a href="@_next_link_@">Next</a>
+  @@END_IF@@
+@@END_IF@@
+
 <strong class="title">Table of Contents</strong>
 <ul>
 @@TABLE@@
 <li>
-@@IF@@ @_$1_@ = @_PAGEPATH_@
-<a href="@_site_base_@@_LOWER:PAGEPATH_@" class="active" aria-current="page">@_CAPITALIZE:PAGENAME_@</a>
+@@IF@@ @_$1_@ = @_pagepath_@
+<a href="@_site_base_@/@_LOWER:pagepath_@" class="active" aria-current="page">@_CAPITALIZE:pagename_@</a>
 @@ELSE@@
-<a href="@_site_base_@@_LOWER:PAGEPATH_@">@_CAPITALIZE:PAGENAME_@</a>
+<a href="@_site_base_@/@_LOWER:pagepath_@">@_CAPITALIZE:pagename_@</a>
 @@END_IF@@
 </li>
 @@END_TABLE@@

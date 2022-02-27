@@ -18,11 +18,12 @@ package Globals is
 
    Blueprint_Folder_Name      : constant string := "blueprints";
    Blueprint_Default          : constant String := "simple";
-
+   HTML_Filetype              : constant String := "html";
+   Front_Matter_Deliminator   : constant String := "---";
    Posts_Source_Folder_Name   : constant string := "_posts";
    Pages_Folder_Name          : constant string := "pages";
    Layout_Folder_Name         : constant string := "_layouts";
-   Dist_Folder_Name           : constant string := "_dist";
+   Dist_Folder_Name           : constant string := "_site";
    Blog_Target_Folder_Name    : constant string := "blog";
    Feed_filename              : constant string := "rssfeed.xml";
    Site_Configuration_Name    : constant string := "_site.cfg";
