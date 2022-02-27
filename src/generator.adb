@@ -246,15 +246,15 @@ package body Generator is
       Insert(Set, Create_Vector(Posts, "POST"));
       Insert(Set, Site_Set);
 
-      Insert(Set,  Assoc ("META_GENERATOR_LINK", Version.Link));
-      Insert(Set,  Assoc ("META_GENERATOR", Version.Name));
-      Insert(Set,  Assoc ("META_GENERATOR_VERSION", Version.Current));
+      Insert(Set,  Assoc ("meta_generator_link", Version.Link));
+      Insert(Set,  Assoc ("meta_generator", Version.Name));
+      Insert(Set,  Assoc ("meta_generator_version", Version.Current));
 
       Reset (G); D := Random(G);
-      Insert(Set,  Assoc ("META_CACHEBUSTER", Ada.Strings.Fixed.Trim(D'image, Ada.strings.Both)));
+      Insert(Set,  Assoc ("meta_cachebuster", Ada.Strings.Fixed.Trim(D'image, Ada.strings.Both)));
 
       -- Create RSS feed
-      Insert(Set,  Assoc ("ATOMFEEDURL", Generator.Rssfeed.Create(Posts,Target_Directory,Site_Set)));
+      Insert(Set,  Assoc ("atomfeedurl", Generator.Rssfeed.Create(Posts,Target_Directory,Site_Set)));
 
       -- Process non-static files
       Process_Documents(Documents, Set, Layoutfolder, Source_Directory, Target_Directory);
