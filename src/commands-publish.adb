@@ -63,6 +63,7 @@ package body Commands.Publish is
          if DIR.Exists(Source_Layout_Folder) then
             -- Delete result of last run
             if Cmd.Delete_Target_Content and then DIR.Exists(Website_Target) then
+                IO.Put_Line("Delete.Website_Target: " & Website_Target);
                DIR.Delete_Tree(Website_Target);
             end if;
 
