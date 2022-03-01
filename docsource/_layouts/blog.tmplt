@@ -15,7 +15,7 @@
 @@INCLUDE@@ menu.tmplt @_linkpath_@
 <aside>
   <div class="container">
-    @@INCLUDE@@ nav.tmplt @_linkpath_@
+    @@INCLUDE@@ nav.tmplt @_linkpath_@ @_previouslink_@ @_nextlink_@
     @@INCLUDE@@ postsnav.tmplt @_linkpath_@
   </div>
 </aside>

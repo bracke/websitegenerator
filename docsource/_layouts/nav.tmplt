@@ -1,14 +1,18 @@
-<nav>
-@@IF@@ @_$1_@ = @_pagepath_@
-  @@IF@@ @_EXIST:previous_link_@
-   <a href="@_previous_link_@">Previous</a>
-  @@END_IF@@
-  @@IF@@ @_EXIST:next_link_@
-   <a href="@_next_link_@">Next</a>
-  @@END_IF@@
+<nav id="stepper" aria-label="Stepper">
+@@IF@@ @_EXIST:previouslink_@
+   <a href="@_site_base_@/@_previouslink_@">&lt; Previous</a>
+@@ELSE@@
+&nbsp;
 @@END_IF@@
+@@IF@@ @_EXIST:nextlink_@
+   <a href="@_site_base_@/@_nextlink_@">Next &gt;</a>
+@@ELSE@@
+&nbsp;
+@@END_IF@@
+</nav>
 
-<strong class="title">Table of Contents</strong>
+<nav aria-label="Main">
+<header>Table of Contents</header>
 <ul>
 @@TABLE@@
 <li>

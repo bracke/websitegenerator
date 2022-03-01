@@ -1,5 +1,5 @@
 ---
-layout: default.tmplt
+layout: blog.tmplt
 title: First Post!
 description:
 summary:

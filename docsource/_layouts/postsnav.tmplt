@@ -1,14 +1,5 @@
-<nav>
-@@IF@@ @_$1_@ = @_postpath_@
-  @@IF@@ @_EXIST:previous_link_@
-   <a href="@_previous_link_@">Previous</a>
-  @@END_IF@@
-  @@IF@@ @_EXIST:next_link_@
-   <a href="@_next_link_@">Next</a>
-  @@END_IF@@
-@@END_IF@@
-
-<strong class="title">Blog</strong>
+<nav aria-label="Blogposts">
+<header>Blog</header>
 <ul>
 @@TABLE@@
 <li>

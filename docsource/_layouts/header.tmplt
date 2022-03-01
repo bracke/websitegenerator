@@ -1,5 +1,5 @@
-<a name="top"></a>
 <header>
-<h1><a href="@_site_base_@">@_site_name_@</a></h1>
+<a name="top"></a>
+<h1><a href="@_site_base_@/index.html">@_site_name_@</a></h1>
 <p class="lead">@_site_description_@</p>
 </header>

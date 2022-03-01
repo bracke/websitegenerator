@@ -86,7 +86,7 @@ aside
 {
    display: none;
 }
-header {
+body > header {
    padding: 1.5rem;
    background-color: var(--header-bg-color);
    color: var(--header-color);
@@ -109,13 +109,27 @@ nav ul li {
     display: list-item;
     text-align: -webkit-match-parent;
 }
-nav a {
+nav {
+   margin-bottom: 2rem;
+}
+nav a
+{
+   padding: .1875rem .5rem;
+   margin-bottom: .125rem;
+   color: var(--nav-item-color);
+   text-decoration: none;
+   border-radius: .25rem !important;
+}
+nav#stepper a {
+   text-transform : uppercase;
+}
+nav ul li a {
     padding: .1875rem .5rem;
     margin-top: .125rem;
     margin-left: 1.25rem;
     color: var(--nav-item-color);
     text-decoration: none;
-    border-radius: .25rem!important;
+    border-radius: .25rem !important;
 }
 nav a:hover, nav a:focus {
     color: var(--nav-item-hover-color);
@@ -136,7 +150,7 @@ nav .active {
    margin-bottom: 1rem;
    display: block;
 }
-nav > strong.title {
+nav > header {
    border-bottom: 1px solid var(--main-border-color);
    padding-bottom: .5rem;
    margin-top: .5rem;

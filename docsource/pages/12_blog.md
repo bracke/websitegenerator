@@ -1,5 +1,5 @@
 ---
-layout: default.tmplt
+layout: blog.tmplt
 title: Blog
 description:
 summary:
@@ -8,3 +8,4 @@ author:
 email:
 updated:
 ---
+### Latest News
