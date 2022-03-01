@@ -5,6 +5,7 @@ with Ada.Characters.Conversions;
 with Ada.Containers.Doubly_Linked_Lists;
 with GNATCOLL.Config;
 with Templates_Parser;
+with Ada.Strings.Maps;
 
 package Generator is
 
@@ -37,7 +38,7 @@ package Generator is
    package Document_List_Sorting is new Document_Container.Generic_Sorting;
    use Document_List_Sorting;
 
-
+   Slash : constant Ada.Strings.Maps.Character_Set := Ada.Strings.Maps.To_Set("/");
 
    Debug : boolean := false;
 

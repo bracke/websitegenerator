@@ -14,7 +14,6 @@ with Ada.Streams.Stream_IO;
 with Ada.Numerics.Discrete_Random;
 with Version;
 with Globals;
-with Ada.Strings.Maps;
 --with Instances;
 
 package body Generator is
@@ -81,7 +80,7 @@ package body Generator is
       Target_Directory  : String;
       LinkpathIn        : String)
    is
-Linkpath: string := Ada.Strings.Fixed.Trim(LinkpathIn, Ada.Strings.Maps.To_Set("/"),Ada.Strings.Maps.To_Set("/"));
+      Linkpath: string := Ada.Strings.Fixed.Trim(LinkpathIn, Slash, Slash);
       Dir : Directory_Entry_Type;
       Dir_Search : Search_Type;
    begin
@@ -132,12 +131,12 @@ Linkpath: string := Ada.Strings.Fixed.Trim(LinkpathIn, Ada.Strings.Maps.To_Set("
       N : Cursor := Next(Document);
    begin
       if P /= No_Element then
-         Insert(Set, Assoc ("previous_link",
+         Insert(Set, Assoc ("previouslink",
                   To_String(To_String(Element(P).Linkpath))));
       end if;
 
       if N /= No_Element then
-         Insert(Set, Assoc ("next_link",
+         Insert(Set, Assoc ("nextlink",
                   To_String(To_String(Element(N).Linkpath))));
       end if;
 
@@ -145,7 +144,12 @@ Linkpath: string := Ada.Strings.Fixed.Trim(LinkpathIn, Ada.Strings.Maps.To_Set("
 
    end Get_Nav_Links;
 
-   procedure Process_Documents(List : in Document_Container.list; Set:Translate_Set; Layoutfolder: String; Source_Directory : String; Targetpath: String) is
+   procedure Process_Documents(
+      List : in Document_Container.list;
+      Set:Translate_Set;
+      Layoutfolder: String;
+      Source_Directory : String;
+      Targetpath: String) is
    begin
       for Document in List.Iterate loop
          if Debug then
@@ -170,6 +174,9 @@ Linkpath: string := Ada.Strings.Fixed.Trim(LinkpathIn, Ada.Strings.Maps.To_Set("
                      F : File_Type;
                      Template : String := Templates_Parser.Parse (Layoutfile, Combined_Set);
                   begin
+                     if Exists(Filename) then
+                        Delete_File(Filename);
+                     end if;
                      Create (F, Mode => Out_File, Name => Filename);
                      Put (F, Template);
                      Close (F);
@@ -197,7 +204,7 @@ Linkpath: string := Ada.Strings.Fixed.Trim(LinkpathIn, Ada.Strings.Maps.To_Set("
             Name : string := Get(Assoc);
             Base_Name : string := To_String(To_String(Document.Basename));
          begin
-            Pagepath := Pagepath & To_String(To_String(Document.Linkpath));
+            Pagepath := Pagepath & Ada.Strings.Fixed.Trim(To_String(To_String(Document.Linkpath)), Slash, Slash);
 
             if Name'Length > 0 then
                Pagename := Pagename & Name;

@@ -18,6 +18,7 @@ with Ada.Strings.Unbounded;
 with Globals;
 with Filesystem;
 with Ada.Strings.Fixed;
+with Ada.Directories.Hierarchical_File_Names;
 
 package body Commands.Publish is
 
@@ -27,6 +28,7 @@ package body Commands.Publish is
    use Generator.aString;
    use Ada.Strings.Unbounded;
    use Ada.Directories;
+   use Ada.Directories.Hierarchical_File_Names;
 
    package IO renames Ada.Text_IO;
    package TT renames CLIC.TTY;
@@ -63,8 +65,15 @@ package body Commands.Publish is
          if DIR.Exists(Source_Layout_Folder) then
             -- Delete result of last run
             if Cmd.Delete_Target_Content and then DIR.Exists(Website_Target) then
-                IO.Put_Line("Delete.Website_Target: " & Website_Target);
-               DIR.Delete_Tree(Website_Target);
+               if Is_Root_Directory_Name(Website_Target) then
+                  IO.Put_Line(TT.Error("Ignored 'delete target' switch (-d) since the target directory appears to be a root directory."));
+               else
+                  if Exists(DIR.Compose(Website_Target, "index", "html")) then
+                     DIR.Delete_Tree(Website_Target);
+                  else
+                     IO.Put_Line(TT.Error("Ignored 'delete target' switch (-d)  since the target directory does not appear to be a website."));
+                  end if;
+               end if;
             end if;
 
             if not DIR.Exists(Website_Target) then
@@ -76,7 +85,6 @@ package body Commands.Publish is
                   if not Filesystem.Is_Subfolder(Website_Source,Website_Target) or else Ada.Strings.Fixed.Head(DIR.Base_Name(Website_Target),1) = "_" then
 
                      Generator.Start (Website_Source, Website_Target);
-                     IO.Put_Line("Website_Target: " & Website_Target);
                      DIR.Set_Directory (Directory => Website_Target);
                      Server.Start_Server;
                   else
@@ -116,7 +124,7 @@ package body Commands.Publish is
          Help        => "Selects a source folder other than the current directory");
 
       Define_Switch
-      (Config, Cmd.Delete_Target_Content'Access, "", "-d", "Publish_Delete_Switch_Message");
+      (Config, Cmd.Delete_Target_Content'Access, "", "-d", "Delete target folder before publish");
 
    end Setup_Switches;
 
