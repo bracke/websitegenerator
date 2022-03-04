@@ -27,6 +27,7 @@ package Globals is
    Dist_Folder_Name           : constant String := "_site";
    Blog_Target_Folder_Name    : constant String := "blog";
    Feed_filename              : constant String := "rssfeed.xml";
+   Sitemap_filename           : constant String := "sitemap.xml";
    Site_Configuration_Name    : constant String := "_site.cfg";
    Excerpt_Separator          : constant String := "<!--more-->";
 

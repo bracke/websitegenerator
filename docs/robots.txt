@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+sitemap: https://bracke.github.io/websitegenerator/sitemap.xml

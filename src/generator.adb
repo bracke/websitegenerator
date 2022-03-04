@@ -5,6 +5,7 @@ with Ada.Strings.Fixed;
 with Ada.Characters.Handling;
 with Generator.Frontmatter;
 with Generator.Rssfeed;
+with Generator.Sitemap;
 with Ada.Text_IO.Text_Streams;
 with Ada.Streams;
 with Ada.Streams.Stream_IO;
@@ -337,6 +338,11 @@ package body Generator is
       --  Create RSS feed
       Insert (Set,  Assoc ("atomfeedurl",
          Generator.Rssfeed.Create (Posts,
+         Target_Directory, Site_Set))
+      );
+      --  Create RSS feed
+      Insert (Set,  Assoc ("sitemapurl",
+         Generator.Sitemap.Create (Posts, Documents,
          Target_Directory, Site_Set))
       );
 

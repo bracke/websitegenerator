@@ -14,23 +14,10 @@ with Version;
 
 package Generator.Rssfeed is
 
-   procedure Add_Node (
-      Node_Name,
-      Node_Value : String;
-      Parent_Node : DOM.Core.Element; Feed : Node);
-
-   procedure Add_Link (
-      Parent_Node : DOM.Core.Element;
-      Url, Relationship : String; Feed : Node);
-
-   procedure Add_Generator (
-      Parent_Node : DOM.Core.Element; Feed : Node);
-
-   procedure Add_Author (Parent_Node : DOM.Core.Element;
-                         Name, Email : String; Feed : Node);
-
-   function Create (Posts : Document_Container.List;
-      Targetpath : String; Site_Set : Translate_Set)
+   function Create (
+      Posts       : Document_Container.List;
+      Targetpath  : String;
+      Site_Set    : Translate_Set)
 
       return String;
 
