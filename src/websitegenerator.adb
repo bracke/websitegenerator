@@ -5,7 +5,9 @@ with Generator;
 with Ada.Directories;
 with Ada.Calendar;
 with GNAT.Command_Line; use GNAT.Command_Line;
-with Ada.Wide_Wide_Text_IO, Ada.Wide_Wide_Text_IO.Text_Streams, Ada.Command_Line, Ada.Exceptions, Ada.Calendar;
+with Ada.Wide_Wide_Text_IO;
+with Ada.Wide_Wide_Text_IO.Text_Streams;
+with Ada.Command_Line;
 with Ada.Exceptions; use Ada.Exceptions;
 with CLIC.Subcommand;
 with Commands;
@@ -39,5 +41,5 @@ begin
 
 exception
    when E : others =>
-      Ada.Text_IO.Put_Line(Exception_Message (E));
+      Ada.Text_IO.Put_Line (Exception_Message (E));
 end Websitegenerator;

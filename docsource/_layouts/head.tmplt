@@ -23,6 +23,8 @@
 <meta name="apple-mobile-web-app-title" content="@_site_name_@">
 <meta name="author" content="@_site_author_@">
 <meta name="robots" content="index,follow">
+<meta http-equiv="cache-control" content="no-cache" />
+<meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
 @@IF@@ @_EXIST:keywords_@
 <meta name="keywords" content="@_keywords_@">
 @@ELSE@@

@@ -6,107 +6,111 @@ with Ada.Directories.Hierarchical_File_Names;
 
 package body Filesystem is
 
-  package IO renames Ada.Text_IO;
+   package IO renames Ada.Text_IO;
+   package HF renames Ada.Directories.Hierarchical_File_Names;
 
-  function Read_Directory(Path: String; Recursive: Boolean) return AAA.Strings.Vector is
+   function Read_Directory (Path : String; Recursive : Boolean) return
+      AAA.Strings.Vector is
 
-    Description : AAA.Strings.Vector := AAA.Strings.Empty_Vector;
+      Description : AAA.Strings.Vector := AAA.Strings.Empty_Vector;
 
-    Filter : constant Filter_Type :=
-    (
-      Ordinary_File => True,
-      Special_File  => False,
-      Directory     => True
-    );
+      Filter : constant Filter_Type :=
+      (
+         Ordinary_File => True,
+         Special_File  => False,
+         Directory     => True
+      );
 
-    procedure Item (Search_Item : in Directory_Entry_Type) is
+      procedure Item (Search_Item : Directory_Entry_Type);
+      procedure Item (Search_Item : Directory_Entry_Type) is
 
-      Path    : String := Full_Name (Directory_Entry => Search_Item);
-      Simple  : String := Simple_Name(Path);
-    begin
-      if Filesystem.Is_Valid_File (Path) then
+         Path    : constant String :=
+            Full_Name (Directory_Entry => Search_Item);
 
-        if Kind (Directory_Entry => Search_Item) = Directory then
+         Simple  : constant String := Simple_Name (Path);
+      begin
+         if Filesystem.Is_Valid_File (Path) then
+            if Kind (Directory_Entry => Search_Item) = Directory then
 
-          Append(Description,Simple);
+               Append (Description, Simple);
 
-          if Recursive then
-            Append(Description, Read_Directory(Path,Recursive));
-          end if;
+               if Recursive then
+                  Append (Description, Read_Directory (Path, Recursive));
+               end if;
+            else
+               Append (Description, Simple);
+            end if;
+         end if;
+      end Item;
+   begin
+      Search
+         (Directory => Path, Pattern => "", Filter => Filter,
+         Process   => Item'Access);
 
-        else
-           Append(Description,Simple);
-        end if;
+      return Description;
 
-      end if;
+   end Read_Directory;
 
-    end Item;
-  begin
-    Search
-      (Directory => Path, Pattern => "", Filter => Filter,
-       Process   => Item'Access);
+   function Count_Files (Path : String) return Natural is
 
-    return Description;
+      Count    : Natural := 0;
+      Filter   : constant Filter_Type :=
+      (
+         Ordinary_File => True,
+         Special_File  => False,
+         Directory     => True
+      );
+      procedure Item (Search_Item : Directory_Entry_Type);
 
-  end Read_Directory;
+      procedure Item (Search_Item : Directory_Entry_Type) is
 
-  function Count_Files(Path : String) return Natural is
+         Path : constant String := Full_Name (Directory_Entry => Search_Item);
+      begin
+         if Filesystem.Is_Valid_File (Path) then
+            if Kind (Directory_Entry => Search_Item) = Directory then
+               Count := Count + Count_Files (Path);
+            else
+               Count := Count + 1;
+            end if;
+         end if;
+      end Item;
+   begin
+      Search
+         (Directory => Path,
+            Pattern => "",
+            Filter => Filter,
+            Process => Item'Access);
 
-    Count: Natural := 0;
-    Filter : constant Filter_Type :=
-    (
-      Ordinary_File => True,
-      Special_File  => False,
-      Directory     => True
-    );
+      return Count;
+   end Count_Files;
 
-    procedure Item (Search_Item : in Directory_Entry_Type) is
+   function Is_Valid_File (Name : String) return Boolean is
+      Simple : constant String := Simple_Name (Name);
+   begin
+      return Simple /= ".." and then Simple /= ".";
+   end Is_Valid_File;
 
-      Path : String := Full_Name (Directory_Entry => Search_Item);
-    begin
-      if Filesystem.Is_Valid_File (Path) then
-        if Kind (Directory_Entry => Search_Item) = Directory then
-          Count := Count + Count_Files(Path);
-        else
-          Count := Count + 1;
-        end if;
-      end if;
-    end Item;
-  begin
-    Search
-        (Directory => Path, Pattern => "", Filter => Filter,
-          Process   => Item'Access);
+   function Get_Executable_Path return String is
+   begin
+      return Templates_Parser.Utils.Get_Program_Directory;
+   end Get_Executable_Path;
 
-    return Count;
-  end Count_Files;
+   function Is_Subfolder (Parent : String; Sub : String) return Boolean is
 
-  function Is_Valid_File(Name : String) return Boolean is
-    Simple : String := Simple_Name(Name);
-  begin
-    return Simple /= ".." and then Simple /= ".";
-  end Is_Valid_File;
+         Parent_Full : constant String := Full_Name (Parent);
+         Sub_Full    : constant String := Full_Name (Sub);
 
-  function Get_Executable_Path return String is
-  begin
-    return Templates_Parser.Utils.Get_Program_Directory;
-  end Get_Executable_Path;
+   begin
+         if Parent_Full = Sub_Full then
+            return True;
+         end if;
 
-  function Is_Subfolder(Parent: string; Sub: String) return boolean is
+         if HF.Is_Root_Directory_Name (Sub_Full) then
+            return False;
+         end if;
 
-      Parent_Full : string := Full_Name(Parent);
-      Sub_Full : string := Full_Name(Sub);
+         return Is_Subfolder (Parent, Containing_Directory (Sub_Full));
 
-  begin
-      if Parent_Full = Sub_Full then
-         return true;
-      end if;
-
-      if Ada.Directories.Hierarchical_File_Names.Is_Root_Directory_Name(Sub_Full) then
-         return false;
-      end if;
-
-      return Is_Subfolder(Parent, Containing_Directory(Sub_Full));
-
-  end Is_Subfolder;
+   end Is_Subfolder;
 
 end Filesystem;

@@ -23,7 +23,8 @@ project Websitegenerator is
          Compile_Checks_Switches :=
            ("-gnatwa",  -- All warnings
             "-gnatVa",  -- All validity checks
-            "-gnatwe"); -- Warnings as errors
+            "-gnatwe",
+            "-F"); -- Warnings as errors
       when others => null;
    end case;
 
@@ -80,13 +81,13 @@ project Websitegenerator is
    end Binder;
 
    package Install is
-    for Artifacts ("blueprints") use ("blueprints/*");
-  end Install;
+      for Artifacts ("blueprints") use ("blueprints/*");
+   end Install;
 
 
-      package Builder is
-         for Executable ("websitegenerator.adb") use "wg";
-      end Builder;
+   package Builder is
+      for Executable ("websitegenerator.adb") use "wg";
+   end Builder;
 
 
 end Websitegenerator;

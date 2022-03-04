@@ -7,10 +7,10 @@ package Commands.Init is
    is new CLIC.Subcommand.Command
    with private;
 
-  overriding function Name (Cmd : Instance) return CLIC.Subcommand.Identifier is
-   ("init");
+   overriding function Name (Cmd : Instance) return
+   CLIC.Subcommand.Identifier is ("init");
 
-  overriding procedure Execute
+   overriding procedure Execute
    (Cmd : in out Instance; Args : AAA.Strings.Vector);
 
    overriding
@@ -18,28 +18,28 @@ package Commands.Init is
                             return CLIC.Subcommand.Switch_Parsing_Kind
    is (CLIC.Subcommand.All_As_Args);
 
-  overriding function Long_Description
+   overriding function Long_Description
    (Cmd : Instance) return AAA.Strings.Vector is
    (AAA.Strings.Empty_Vector.Append
      ("Initializes a new website in the current folder.")
      .New_Line
      );
 
-  overriding procedure Setup_Switches
+   overriding procedure Setup_Switches
    (Cmd    : in out Instance;
     Config : in out CLIC.Subcommand.Switches_Configuration);
 
-  overriding function Short_Description (Cmd : Instance) return String is
+   overriding function Short_Description (Cmd : Instance) return String is
    ("Initializes a new website in the current folder.");
 
-  overriding function Usage_Custom_Parameters (Cmd : Instance) return String is
-   ("[-dry-run] [--blueprint <name>]");
+   overriding function Usage_Custom_Parameters (Cmd : Instance)
+   return String is ("[-dry-run] [--blueprint <name>]");
 
 private
 
-  type Instance is new CLIC.Subcommand.Command with record
-    Dry_Run : aliased Boolean := False;
-    Blueprint : aliased GNAT.Strings.String_Access;
-  end record;
+   type Instance is new CLIC.Subcommand.Command with record
+      Dry_Run : aliased Boolean := False;
+      Blueprint : aliased GNAT.Strings.String_Access;
+   end record;
 
 end Commands.Init;

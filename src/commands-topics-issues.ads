@@ -4,9 +4,9 @@ with CLIC.TTY;
 
 package Commands.Topics.Issues is
 
-  package TT renames CLIC.TTY;
+   package TT renames CLIC.TTY;
 
-  type Topic is new CLIC.Subcommand.Help_Topic with null record;
+   type Topic is new CLIC.Subcommand.Help_Topic with null record;
 
    overriding
    function Name (This : Topic) return CLIC.Subcommand.Identifier
@@ -21,6 +21,6 @@ package Commands.Topics.Issues is
    is (AAA.Strings.Empty_Vector.Append
      ("Please create issues on the WebsiteGenerator project's GitHub page: ")
      .Append
-     (TT.Url ("https://github.com/bracke/WebsiteGenerator/issues")));
+     (TT.URL ("https://github.com/bracke/WebsiteGenerator/issues")));
 
 end Commands.Topics.Issues;

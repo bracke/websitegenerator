@@ -33,18 +33,46 @@ package Generator is
      (Document);
    use Document_Container;
 
-   function "<"(Left, Right : Document) return boolean;
+   function "<" (Left, Right : Document) return Boolean;
 
    package Document_List_Sorting is new Document_Container.Generic_Sorting;
    use Document_List_Sorting;
 
-   Slash : constant Ada.Strings.Maps.Character_Set := Ada.Strings.Maps.To_Set("/");
+   Slash : constant Ada.Strings.Maps.Character_Set :=
+      Ada.Strings.Maps.To_Set ("/");
 
-   Debug : boolean := false;
+   Debug : Boolean := False;
 
-   function Read_From_Set(Set : Translate_Set; Token: string) return string;
+   procedure Process_File
+     (List        : out Document_Container.List;
+      Filepath    : String;
+      Targetpath  : String;
+      Linkpath    : String);
 
-   procedure Start (Source_Directory : string; Target_Directory : string);
+   procedure Process_Directory
+     (List              : out Document_Container.List;
+      Source_Directory  : String;
+      Target_Directory  : String;
+      LinkpathIn        : String);
+
+   procedure Process_Documents (
+      List           : Document_Container.List;
+      Set            : Translate_Set;
+      Layoutfolder   : String;
+      Source_Directory : String;
+      Targetpath     : String);
+
+   function Create_Vector (
+      List : Document_Container.List;
+      Prefix : String) return Translate_Set;
+
+   function Get_Nav_Links (
+      Document : Cursor;
+      List : Document_Container.List) return Translate_Set;
+
+   function Read_From_Set (Set : Translate_Set; Token : String) return String;
+
+   procedure Start (Source_Directory : String; Target_Directory : String);
 
 private
 

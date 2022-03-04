@@ -12,21 +12,22 @@ package Globals is
 
    use Integer_Hashed_Maps;
 
- --  M : Map :=(
- --     "Publish_Delete_Switch_Message" => "Delete content of the target folder before publishing into that folder"
- --  );
+   --  M : Map :=(
+   --  "Publish_Delete_Switch_Message" =>
+   --  "Delete content of the target folder before publishing into that folder"
+   --  );
 
-   Blueprint_Folder_Name      : constant string := "blueprints";
+   Blueprint_Folder_Name      : constant String := "blueprints";
    Blueprint_Default          : constant String := "simple";
    HTML_Filetype              : constant String := "html";
    Front_Matter_Deliminator   : constant String := "---";
-   Posts_Source_Folder_Name   : constant string := "_posts";
-   Pages_Folder_Name          : constant string := "pages";
-   Layout_Folder_Name         : constant string := "_layouts";
-   Dist_Folder_Name           : constant string := "_site";
-   Blog_Target_Folder_Name    : constant string := "blog";
-   Feed_filename              : constant string := "rssfeed.xml";
-   Site_Configuration_Name    : constant string := "_site.cfg";
-   Excerpt_Separator          : constant string := "<!--more-->";
+   Posts_Source_Folder_Name   : constant String := "_posts";
+   Pages_Folder_Name          : constant String := "pages";
+   Layout_Folder_Name         : constant String := "_layouts";
+   Dist_Folder_Name           : constant String := "_site";
+   Blog_Target_Folder_Name    : constant String := "blog";
+   Feed_filename              : constant String := "rssfeed.xml";
+   Site_Configuration_Name    : constant String := "_site.cfg";
+   Excerpt_Separator          : constant String := "<!--more-->";
 
 end Globals;

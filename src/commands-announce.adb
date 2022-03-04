@@ -3,24 +3,21 @@ with Ada.Directories; use Ada.Directories;
 with Blueprint;       use Blueprint;
 with AAA.Strings;     use AAA.Strings;
 with Ada.Command_Line;
-with Ada.Text_IO;
 with Templates_Parser;
-with CLIC.TTY;
 with Filesystem;
 with Commands;
 
 package body Commands.Announce is
 
-
-  -------------
-  -- Execute --
-  -------------
-  overriding
-  procedure Execute ( Cmd  : in out Instance;
+   -------------
+   -- Execute --
+   -------------
+   overriding
+   procedure Execute (Cmd  : in out Instance;
                       Args :        AAA.Strings.Vector) is
-  begin
-    null;
-  end Execute;
+   begin
+      null;
+   end Execute;
 
    --------------------
    -- Setup_Switches --

@@ -5,26 +5,29 @@ with Blueprint; use Blueprint;
 
 package body Commands.Init is
 
-  package IO renames Ada.Text_IO;
-  package TT renames CLIC.TTY;
+   package IO renames Ada.Text_IO;
+   package TT renames CLIC.TTY;
 
-  -------------
-  -- Execute --
-  -------------
+   -------------
+   -- Execute --
+   -------------
 
-  overriding
-  procedure Execute ( Cmd  : in out Instance;
+   overriding
+   procedure Execute (Cmd  : in out Instance;
                       Args :        AAA.Strings.Vector)
-  is
-    ToDo : Action := Write;
-  begin
-    if Cmd.Dry_Run then
-      IO.Put_Line(TT.Emph("You specified the dry-run flag, so no changes will be written."));
-      ToDo := DryRun;
-    end if;
+   is
+      ToDo : Action := Write;
+   begin
+      if Cmd.Dry_Run then
+         IO.Put_Line (TT.Emph ("You specified the dry-run flag," &
+         " no changes will be written."));
+         ToDo := DryRun;
+      end if;
 
-    Init_Project.Init(Ada.Directories.Current_Directory, Cmd.Blueprint.all,ToDo);
-  end Execute;
+      Init_Project.Init (Ada.Directories.Current_Directory,
+         Cmd.Blueprint.all, ToDo);
+
+   end Execute;
 
    --------------------
    -- Setup_Switches --

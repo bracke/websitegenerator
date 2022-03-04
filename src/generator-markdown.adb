@@ -45,18 +45,18 @@ package Options is
 
       overriding procedure Option
         (Handler  : in out State;
-         Id       : in Options.Id;
-         Argument : in String);
+         Id       : Options.Id;
+         Argument : iString);
 
       overriding procedure Argument
         (Handler  : in out State;
-         Argument : in String);
+         Argument : String);
    end Options;
 
 
    procedure Print_Help
-     (Config : in Options.Getopt.Configuration;
-      Output : in Ada.Text_IO.File_Type);
+     (Config : Options.Getopt.Configuration;
+      Output : Ada.Text_IO.File_Type);
 
 
    package body Options is
@@ -81,8 +81,8 @@ package Options is
 
       overriding procedure Option
         (Handler  : in out State;
-         Id       : in Options.Id;
-         Argument : in String) is
+         Id       : Options.Id;
+         Argument : String) is
       begin
          case Id is
             when Discount_Input =>
@@ -113,7 +113,7 @@ package Options is
 
       overriding procedure Argument
         (Handler  : in out State;
-         Argument : in String) is
+         Argument : String) is
       begin
          if Handler.Action = Run then
         --    Process_File (Argument);
@@ -128,7 +128,7 @@ package Options is
          function Is_Autodetect return Boolean;
 
          function Is_Autodetect return Boolean is
-            Reconstructed : String := "autodetect";
+            Reconstructed : constant String := "autodetect";
             Length : constant Natural
               := Natural'Min (Image'Length, Reconstructed'Length);
 
@@ -180,8 +180,8 @@ package Options is
    end Options;
 
  procedure Print_Help
-     (Config : in Options.Getopt.Configuration;
-      Output : in Ada.Text_IO.File_Type)
+     (Config : Options.Getopt.Configuration;
+      Output : Ada.Text_IO.File_Type)
    is
       use Ada.Text_IO;
       Indent : constant String := "    ";

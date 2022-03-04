@@ -2,15 +2,16 @@ with AAA.Strings; use AAA.Strings;
 
 package Filesystem is
 
-  function Read_Directory(Path: String; Recursive: Boolean) return AAA.Strings.Vector;
+   function Read_Directory (Path : String;
+                            Recursive : Boolean) return AAA.Strings.Vector;
 
-  function Count_Files(Path : String) return Natural;
+   function Count_Files (Path : String) return Natural;
 
-  function Is_Valid_File(Name : String) return Boolean;
+   function Is_Valid_File (Name : String) return Boolean;
 
-  function Get_Executable_Path return String;
+   function Get_Executable_Path return String;
 
-  function Is_Subfolder(Parent: string; Sub: String) return boolean;
+   function Is_Subfolder (Parent : String; Sub : String) return Boolean;
 
 private
 
