@@ -10,6 +10,7 @@ with Ada.Text_IO.Text_Streams;
 with Ada.Streams;
 with Ada.Streams.Stream_IO;
 with Ada.Numerics.Discrete_Random;
+with Progress_Indicators.Spinners;
 with Version;
 with Globals;
 
@@ -17,7 +18,7 @@ package body Generator is
 
    use Ada.Directories;
    use Ada.Text_IO;
-
+   use Progress_Indicators.Spinners;
    package CH renames Ada.Characters.Handling;
    package CC renames Ada.Characters.Conversions;
    package DIR renames Ada.Directories;
@@ -236,18 +237,21 @@ package body Generator is
       Set : Translate_Set;
       Pagepath : Tag;
       Pagename : Tag;
+      Pageexcerpt : Tag;
    begin
       for Document of List loop
          declare
-            Assoc : constant Association := Get (Document.T, "title");
-            Name : constant String := Get (Assoc);
+            Name : constant String
+               := Read_From_Set (Document.T, "title");
             Base_Name : constant String :=
                CC.To_String (To_String (Document.Basename));
+            Excerpt : constant String := Read_From_Set (Document.T, "title");
          begin
             Pagepath := Pagepath & Ada.Strings.Fixed.Trim (
                CC.To_String (To_String (Document.Linkpath)),
                Slash, Slash);
 
+            Pageexcerpt := Pageexcerpt & Excerpt;
             if Name'Length > 0 then
                Pagename := Pagename & Name;
             else
@@ -257,6 +261,7 @@ package body Generator is
       end loop;
       Insert (Set, Assoc (Prefix & "path", Pagepath));
       Insert (Set, Assoc (Prefix & "name", Pagename));
+      Insert (Set, Assoc (Prefix & "excerpt", Pageexcerpt));
 
       return Set;
    end Create_Vector;
@@ -300,7 +305,9 @@ package body Generator is
 
       G : Random_Integer.Generator;
       D : Dice;
+      Indicator : Spinner := Make;
    begin
+      Ada.Text_IO.Put (Value (Indicator));
       Site_Set := Null_Set;
       if Exists (Config_Path) then
          Generator.Frontmatter.Read_Content (Config_Path, Site_Set);
@@ -349,8 +356,12 @@ package body Generator is
       --  Process non-static files
       Process_Documents (Documents, Set, Layoutfolder,
          Source_Directory, Target_Directory);
+
       Process_Documents (Posts, Set, Layoutfolder,
          Blog_Source_Directory, Blog_Target_Directory);
+
+      Disable_All;
+      Ada.Text_IO.Put (Value (Indicator));
 
    end Start;
 

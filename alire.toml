@@ -17,3 +17,5 @@ clic = "~0.2.0"  # Added by alr
 aaa = "~0.2.4"  # Added by alr
 [[depends-on]]  # Added by alr
 xmlada = "^21.0.0"  # Added by alr
+[[depends-on]]  # Added by alr
+progress_indicators = "~0.0.1"  # Added by alr

@@ -22,10 +22,8 @@ package body Generator.Sitemap is
         DIR.Compose (Targetpath, Globals.Sitemap_filename);
 
       File_Handle : Ada.Streams.Stream_IO.File_Type;
-
    begin
-
-      Feed      := Create_Document (Implementation => DOMi);
+      Feed := Create_Document (Implementation => DOMi);
       Main_Node := Create_Element (Doc => Feed, Tag_Name => "urlset");
       DOM.Core.Elements.Set_Attribute
         (Main_Node, "xmlns", "http://www.sitemaps.org/schemas/sitemap/0.9");
@@ -44,7 +42,6 @@ package body Generator.Sitemap is
          Xmlhelpers.Add_Node
            ("lastmod", Generator.Read_From_Set (aPost.T, "updated"),
             Entry_Node, Feed);
-
       end loop;
 
       for aDocument of Documents loop
@@ -59,7 +56,6 @@ package body Generator.Sitemap is
          Xmlhelpers.Add_Node
            ("lastmod", Generator.Read_From_Set (aDocument.T, "updated"),
             Entry_Node, Feed);
-
       end loop;
 
       Ada.Streams.Stream_IO.Create (File_Handle, Out_File, Filepath);

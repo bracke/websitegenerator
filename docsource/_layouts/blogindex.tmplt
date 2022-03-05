@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+@@IF@@ @_EXIST:language_@
+<html lang="@_language_@">
+@@ELSE@@
+<html lang="@_site_language_@">
+@@END_IF@@
+@@INCLUDE@@ head.tmplt
+<body>
+@@INCLUDE@@ header.tmplt
+<main>
+@@TABLE@@
+<article>
+<h2>@_postname_@</h2>
+@_postexcerpt_@
+<br />
+<a href="@_site_base_@/@_LOWER:postpath_@">@_CAPITALIZE:postname_@</a>
+</article>
+@@END_TABLE@@
+@@INCLUDE@@ menu.tmplt @_linkpath_@
+<aside>
+  <div class="container">
+    @@INCLUDE@@ nav.tmplt @_linkpath_@ @_previouslink_@ @_nextlink_@
+    @@INCLUDE@@ postsnav.tmplt @_linkpath_@
+  </div>
+</aside>
+</main>
+@@INCLUDE@@ footer.tmplt
+</body>
+</html>
