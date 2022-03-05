@@ -2,12 +2,12 @@
 @@IF@@ @_EXIST:previouslink_@
    <a href="@_site_base_@/@_previouslink_@">&lt; Previous</a>
 @@ELSE@@
-&nbsp;
+   <span>&nbsp;</span>
 @@END_IF@@
 @@IF@@ @_EXIST:nextlink_@
    <a href="@_site_base_@/@_nextlink_@">Next &gt;</a>
 @@ELSE@@
-&nbsp;
+   <span>&nbsp;</span>
 @@END_IF@@
 </nav>
 

@@ -129,7 +129,7 @@ package body Commands.Publish is
                IO.Put_Line (TT.Error ("Source folder (" &
                Website_Source &
                ") is not a website. Please create a website using the " &
-               TT.Emph ("websitegenerator new <name>") & " command."));
+               TT.Emph ("wg new <name>") & " command."));
             end if;
          else
             IO.Put_Line (

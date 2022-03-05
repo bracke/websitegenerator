@@ -149,18 +149,22 @@ package body Generator is
       List : Document_Container.List) return Translate_Set is
 
       Set : Translate_Set;
-      P : constant Cursor := Previous (Document);
-      N : constant Cursor := Next (Document);
+      P : Cursor := Previous (Document);
+      N : Cursor := Next (Document);
    begin
-      if P /= No_Element then
-         Insert (Set, Assoc ("previouslink",
-                  CC.To_String (To_String (Element (P).Linkpath))));
+      if P = No_Element then
+         P := Last (List);
       end if;
 
-      if N /= No_Element then
-         Insert (Set, Assoc ("nextlink",
-                  CC.To_String (To_String (Element (N).Linkpath))));
+      Insert (Set, Assoc ("previouslink",
+               CC.To_String (To_String (Element (P).Linkpath))));
+
+      if N = No_Element then
+         N := First (List);
       end if;
+
+      Insert (Set, Assoc ("nextlink",
+               CC.To_String (To_String (Element (N).Linkpath))));
 
       return Set;
 
