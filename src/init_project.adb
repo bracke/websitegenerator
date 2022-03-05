@@ -63,12 +63,12 @@ package body Init_Project is
          IO.Put_Line
          (TT.Info
             (TT.Description ("Build your site using") & " " &
-            TT.Terminal ("WebsiteGenerator publish")));
+            TT.Terminal ("wg publish")));
 
          IO.Put_Line
          (TT.Info
             (TT.Description ("Add components and other items using") & " " &
-            TT.Terminal ("WebsiteGenerator generate")));
+            TT.Terminal ("wg generate")));
       else
          IO.Put_Line (TT.Error ("Blueprint not found: " &
          To_String (To_String (Blueprint_Path))));
