@@ -1,13 +1,11 @@
----
-layout: default.tmplt
-title: Layouts
-description:
-summary:
-keywords:
-author:
-email:
-updated:
----
+-- layout: default.tmplt
+-- title: Layouts
+-- description:
+-- summary:
+-- keywords:
+-- author:
+-- email:
+-- updated:
 ### Default
 
 

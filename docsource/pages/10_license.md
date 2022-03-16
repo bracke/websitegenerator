@@ -1,13 +1,11 @@
----
-layout: default.tmplt
-title: License
-description:
-summary:
-keywords:
-author:
-email:
-updated:
----
+-- layout: default.tmplt
+-- title: License
+-- description:
+-- summary:
+-- keywords:
+-- author:
+-- email:
+-- updated:
 ## Creative Commons Legal Code
 
 CC0 1.0 Universal

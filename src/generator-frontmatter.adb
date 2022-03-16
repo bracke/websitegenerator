@@ -1,5 +1,4 @@
-pragma Ada_2012;
-with GNAT.Regexp;     use GNAT.Regexp;
+with GNAT.Regexp;       use GNAT.Regexp;
 with Ada.Directories;
 with Ada.Characters.Conversions;
 with Ada.Text_IO;
@@ -8,22 +7,38 @@ with Templates_Parser;
 with GNAT.Strings;
 with Ada.Strings.Fixed;
 with Globals;
-
+with Ada.Exceptions; use Ada.Exceptions;
+with Linereader;
+with Ada.Strings;
+with Ada.Strings.Maps;
+with Ada.Strings.Maps.Constants;
 package body Generator.Frontmatter is
 
    use Ada.Characters.Conversions;
    use Ada.Text_IO;
    use GNATCOLL.Mmap;
+   use Ada.Strings.Maps;
+   use Ada.Strings.Maps.Constants;
    use GNAT.Strings;
-
+   package FIX renames Ada.Strings.Fixed;
    package DIR renames Ada.Directories;
+   package CC renames Ada.Characters.Conversions;
 
-   --  whitespace : constant Character_Set :=
-   --    To_Set (' ' & ASCII.LF & ASCII.HT & ASCII.CR);
+   whitespace : constant Character_Set :=
+       To_Set (' ' & ASCII.LF & ASCII.HT & ASCII.CR & Character'val(0));
+
+   useless_characters : constant Character_Set := Control_Set and To_Set (' ');
 
    WW_HT : constant Wide_Wide_Character := To_Wide_Wide_Character (ASCII.HT);
    WW_LF : constant Wide_Wide_Character := To_Wide_Wide_Character (ASCII.LF);
    WW_CR : constant Wide_Wide_Character := To_Wide_Wide_Character (ASCII.CR);
+   WW_Colon : constant Wide_Wide_Character := To_Wide_Wide_Character (ASCII.Colon);
+
+   UnixLF  : constant String := String'(1 => ASCII.LF);
+   MacCR   : constant String := String'(1 => ASCII.CR);
+   OS2CRLF : constant String := String'(1 => ASCII.CR, 2 => ASCII.LF);
+   package LR is new Linereader(UnixLF);
+   use LR;
 
    function Read_Excerpt (
       Content : String;
@@ -31,19 +46,15 @@ package body Generator.Frontmatter is
    begin
       if Excerpt_Separator /= "" and then
          Ada.Strings.Fixed.Index (Content, Excerpt_Separator) /= 0
-
       then
-
          return Ada.Strings.Fixed.Head (Content,
             Ada.Strings.Fixed.Index (Content, Excerpt_Separator));
 
       elsif Ada.Strings.Fixed.Index (Content,
-       Globals.Excerpt_Separator) /= 0
+         Globals.Excerpt_Separator) /= 0
       then
-
          return Ada.Strings.Fixed.Head (Content,
             Ada.Strings.Fixed.Index (Content, Globals.Excerpt_Separator));
-
       end if;
 
       return Ada.Strings.Fixed.Head (Content,
@@ -61,86 +72,66 @@ package body Generator.Frontmatter is
       return "";
    end Read_CreateDate;
 
+   function Is_Frontmatter (Line : String) return Boolean is
+      Last : Natural := Line'First+Globals.Front_Matter_Prefix'Length - 1;
+      Prefix : String Renames Line(Line'First .. Last);
+   begin
+      return Prefix'Length >= Globals.Front_Matter_Prefix'Length And then
+         Prefix = Globals.Front_Matter_Prefix;
+   end Is_Frontmatter;
+
    procedure Read_Content (Filepath : String; T : in out Translate_Set) is
 
       Basename      : constant String        := DIR.Base_Name (Filepath);
       Created_Date  : constant String        := Read_CreateDate (Basename);
 
-      Source_File   : constant Mapped_File   := Open_Read  (Filepath);
-      Source_Region : constant Mapped_Region := Read  (Source_File);
+      Source_File   : constant Mapped_File   := Open_Read (Filepath);
+      Source_Region : constant Mapped_Region := Read (File => Source_File,
+                                                      Advice => Use_Sequential,
+                                                      Mutable => False);
+
       L             : constant Natural       := Natural (Length (Source_File));
-      Source_ptr    : constant Str_Access   := Data (Source_Region);
-      Source        : constant XString
-         := To_XString (To_Wide_Wide_String (Source_ptr (1 .. L)));
-      Position, Start, Equal_Position : Natural;
-      Line, Item_Name, Item_Value : XString;
+      Source_ptr    : constant Str_Access    := Data (Source_Region);
+
+      R : LR.Reader (Source_ptr, L);
    begin
-      --  Read first line
-      Start := 1;
-      Position := Source.Find (WW_LF, Start);
-      Line := Source.Slice (Start, Position);
-      Start := Position + 1;
+      loop
+         exit when R.End_Of_Input;
 
-      if To_String (To_String (Line.Head (3))) =
-         Globals.Front_Matter_Deliminator
-      then
-         loop
-            Position := Source.Find (WW_LF, Start);
-            if Position = 0 then
-               Position := Length (Line);
-               exit;
-            end if;
+         R.Backup;
+         declare
+            A_Line : constant String := R.Get_Line;
+         begin
+           exit when not Is_Frontmatter (A_Line);
+           declare
+              First : Positive := A_Line'First + Globals.Front_Matter_Prefix'Length;
+              Frontmatter : String renames A_Line (First .. A_Line'Last);
 
-            Line := Source.Slice (Start, Position);
-            Start := Position + 1;
-            exit when To_String (To_String (Line.Head (3))) =
-               Globals.Front_Matter_Deliminator;
+              Separator_Position : Natural := FIX.Index (Frontmatter, Globals.Front_Matter_Separator);
+              -- Index(Source, Maps.To_Set(Space), Outside, Going)
+              First_Nonblank_Position  : Natural := FIX.Index_Non_Blank (Frontmatter, Ada.Strings.Forward);
+              Last_Nonblank_Position   : Natural := FIX.Index_Non_Blank (Frontmatter, Ada.Strings.Backward);
+           begin
+              if Separator_Position /= 0 and then
+                  First_Nonblank_Position < Separator_Position then
 
-            Equal_Position := Line.Find (":");
-
-            if Equal_Position /= 0 then
-
-               Item_Name := Line.Slice (1, Equal_Position - 1);
-               Item_Value := Line.Slice (Equal_Position + 1, Line.Length);
-
-               Item_Name := Item_Name.Trim;
-               Item_Value := Item_Value.Trim;
-               Item_Name := Item_Name.Trim (Ada.Strings.Both, WW_LF);
-               Item_Value := Item_Value.Trim (Ada.Strings.Both, WW_LF);
-               Item_Name := Item_Name.Trim (Ada.Strings.Both, WW_CR);
-               Item_Value := Item_Value.Trim (Ada.Strings.Both, WW_CR);
-               Item_Name := Item_Name.Trim (Ada.Strings.Both, WW_HT);
-               Item_Value := Item_Value.Trim (Ada.Strings.Both, WW_HT);
-
-               Insert (T,
-                  Assoc (
-                     To_String (To_String (Item_Name)),
-                     To_String (To_String (Item_Value))
-                  )
-               );
-
-            end if;
-            Position := Source.Find (WW_LF, Start);
-         end loop;
-
-         Insert (T,
-                  Assoc (
-                     "content",
-                     To_String (To_String (
-                        Source.Slice (Start, Source.Length).Trim (
-                           Ada.Strings.Both,
-                           WW_CR).Trim (Ada.Strings.Both, WW_LF)
-                        )
-                     )
-                  )
-               );
-      else
-         Insert (T,
-                     Assoc (
-                        "content",
-                        To_String (To_String (Source))
+                  Insert
+                  (T, Assoc
+                     (FIX.Trim(Frontmatter (First_Nonblank_Position .. Separator_Position-1), Ada.Strings.Both),
+                      FIX.Trim(Frontmatter (Separator_Position+1 .. Last_Nonblank_Position), Ada.Strings.Both)
                      )
                   );
+              end if;
+            end;
+         exception
+            when E : others =>
+               Put_Line (Exception_Message (E));
+         end;
+      end loop;
+
+      if not R.End_Of_Input then
+         R.Restore;
+         Insert (T, Assoc ("content", R.Get_Remainder));
       end if;
 
       Insert (T,
@@ -150,24 +141,16 @@ package body Generator.Frontmatter is
                )
             );
 
-      if Generator.Read_From_Set (T, "created") /= "" then
-
-         Insert (T, Assoc ("created",
-                  Generator.Read_From_Set (T, "created")
-         ));
-
-      elsif Created_Date /= "" then
-
-         Insert (T, Assoc ("created", Created_Date));
-
+      if Generator.Read_From_Set (T, "created") = "" then
+         if Created_Date /= "" then
+            Insert (T, Assoc ("created", Created_Date));
+         end if;
       end if;
 
-      if Generator.Read_From_Set (T, "created") = "" then
-
+      if Generator.Read_From_Set (T, "updated") = "" then
          Insert (T, Assoc ("updated",
             Generator.Read_From_Set (T, "created")
          ));
-
       end if;
 
    end Read_Content;
@@ -184,10 +167,13 @@ package body Generator.Frontmatter is
 
       Containing_Directory : constant String :=
          Ada.Directories.Containing_Directory (Targetpath);
+
       Base_Name : constant String := Ada.Directories.Base_Name (Targetpath);
+
       Targetname : constant String :=
          Ada.Directories.Compose (Containing_Directory,
          Base_Name, Globals.HTML_Filetype);
+
       Filename : constant String :=
          Ada.Directories.Compose ("", Base_Name, "html");
    begin
@@ -201,17 +187,16 @@ package body Generator.Frontmatter is
 
          Read_Content (Filepath, aDocument.T);
          declare
-            Assoc : constant Association := Get (aDocument.T, "layout");
+            Layout : String := Read_From_Set(aDocument.T, "layout");
          begin
-            if Assoc = Null_Association or Get (Assoc) = "" then
+            if Layout'Length = 0 then
                Ada.Text_IO.Put_Line ("File " &
-               Filepath & " has no layout defined in frontmatter");
+               Layout & " has no layout defined in frontmatter");
             else
                aDocument.Layout := To_XString (
-                  To_Wide_Wide_String (Get (Assoc)));
+                  To_Wide_Wide_String (Layout));
             end if;
          end;
-
       else
          Ada.Text_IO.Put_Line ("File " & Filepath &
          " does not exist");

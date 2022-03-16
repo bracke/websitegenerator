@@ -1,13 +1,10 @@
----
-layout: default.tmplt
-title: Deploying
-description:
-summary:
-keywords:
-author:
-email:
-updated:
----
-
+-- layout: default.tmplt
+-- title: Deploying
+-- description:
+-- summary:
+-- keywords:
+-- author:
+-- email:
+-- updated:
 ### Github
 

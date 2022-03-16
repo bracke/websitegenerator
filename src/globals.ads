@@ -3,24 +3,11 @@ with Ada.Strings.Hash;
 
 package Globals is
 
-   package Integer_Hashed_Maps is new
-     Ada.Containers.Indefinite_Hashed_Maps
-       (Key_Type        => String,
-        Element_Type    => String,
-        Hash            => Ada.Strings.Hash,
-        Equivalent_Keys => "=");
-
-   use Integer_Hashed_Maps;
-
-   --  M : Map :=(
-   --  "Publish_Delete_Switch_Message" =>
-   --  "Delete content of the target folder before publishing into that folder"
-   --  );
-
    Blueprint_Folder_Name      : constant String := "blueprints";
    Blueprint_Default          : constant String := "simple";
    HTML_Filetype              : constant String := "html";
-   Front_Matter_Deliminator   : constant String := "---";
+   Front_Matter_Prefix        : constant String := "--";
+   Front_Matter_Separator     : constant String := ":";
    Posts_Source_Folder_Name   : constant String := "_posts";
    Pages_Folder_Name          : constant String := "pages";
    Layout_Folder_Name         : constant String := "_layouts";

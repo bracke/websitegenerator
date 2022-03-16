@@ -1,13 +1,11 @@
----
-layout: default.tmplt
-title: Templates
-description:
-summary:
-keywords:
-author:
-email:
-updated:
----
+-- layout: default.tmplt
+-- title: Templates
+-- description:
+-- summary:
+-- keywords:
+-- author:
+-- email:
+-- updated:
 ### Filter
 
 ### Includes

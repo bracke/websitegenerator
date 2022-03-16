@@ -1,13 +1,11 @@
----
-layout: default.tmplt
-title: Generate
-description:
-summary:
-keywords:
-author:
-email:
-updated:
----
+-- layout: default.tmplt
+-- title: Generate
+-- description:
+-- summary:
+-- keywords:
+-- author:
+-- email:
+-- updated:
 ### Page
 
 

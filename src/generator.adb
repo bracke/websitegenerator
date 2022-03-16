@@ -33,6 +33,18 @@ package body Generator is
       return Left.Basename < Right.Basename;
    end "<";
 
+   function Find (List : Document_Container.List; Name : XString) return Cursor
+   is
+   begin
+      for aDocument in List.Iterate loop
+         if Element (aDocument).Basename = Name then
+            return aDocument;
+         end if;
+      end loop;
+
+      return No_Element;
+   end Find;
+
    ------------------
    -- Process_File --
    ------------------
@@ -310,6 +322,7 @@ package body Generator is
       G : Random_Integer.Generator;
       D : Dice;
       Indicator : Spinner := Make;
+      Index: Cursor := No_Element;
    begin
       Ada.Text_IO.Put (Value (Indicator));
       Site_Set := Null_Set;
@@ -322,6 +335,12 @@ package body Generator is
       --  Copy static files and directories and create List of pages.
       Process_Directory (Documents, Source_Directory, Target_Directory, "");
       Sort (Documents);
+
+      Index := Find (Documents, To_XString ("index"));
+      if Index /= No_Element then
+         Prepend (Documents, Element (Index));
+         Delete (Documents, Index);
+      end if;
 
       --  Process blog
       if Exists (Blog_Source_Directory) then

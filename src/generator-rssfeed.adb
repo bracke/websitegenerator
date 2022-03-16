@@ -1,7 +1,8 @@
 with Xmlhelpers;
-
+with Ada.Containers;
 package body Generator.Rssfeed is
 
+   use Ada.Containers;
    use Ada.Characters.Conversions;
    package DIR renames Ada.Directories;
 
@@ -62,11 +63,14 @@ package body Generator.Rssfeed is
          Main_Node,
          Feed);
 
-      --   Xmlhelpers.Add_Node
-      --    (Node_Name => "updated",
-      --     Node_Value => To_HTTP_Date(Date =>
-      --     Local_Entries(1).Updated),
-      --     Parent_Node => Main_Node);
+      if Length (Posts) /= 0 then
+         Xmlhelpers.Add_Node
+            ("updated",
+             Read_From_Set (First_Element (Posts).T, "updated"),
+             Main_Node,
+             Feed);
+      end if;
+
       Xmlhelpers.Add_Author (Main_Node,
                   Generator.Read_From_Set (Site_Set, "site_author"),
                   Generator.Read_From_Set (Site_Set, "site_base"), Feed);

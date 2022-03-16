@@ -1,10 +1,8 @@
----
-layout: blog.tmplt
-title: First Post!
-description:
-summary:
-keywords:
-author:
-email:
-updated:
----
+-- layout: default.tmplt
+-- title: First post!
+-- description:
+-- summary:
+-- keywords:
+-- author:
+-- email:
+-- updated:

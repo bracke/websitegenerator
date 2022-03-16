@@ -1,13 +1,11 @@
----
-layout: default.tmplt
-title: Announcing
-description: null
-summary: null
-keywords: null
-author: null
-email: null
-updated: null
----
+-- layout: default.tmplt
+-- title: Announcing
+-- description:
+-- summary:
+-- keywords:
+-- author:
+-- email:
+-- updated:
 ### DevTo
 
 ### LinkedIn
