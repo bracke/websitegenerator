@@ -12,6 +12,8 @@ with Linereader;
 with Ada.Strings;
 with Ada.Strings.Maps;
 with Ada.Strings.Maps.Constants;
+with Ada.Strings.Unbounded;
+
 package body Generator.Frontmatter is
 
    use Ada.Characters.Conversions;
@@ -34,10 +36,7 @@ package body Generator.Frontmatter is
    WW_CR : constant Wide_Wide_Character := To_Wide_Wide_Character (ASCII.CR);
    WW_Colon : constant Wide_Wide_Character := To_Wide_Wide_Character (ASCII.Colon);
 
-   UnixLF  : constant String := String'(1 => ASCII.LF);
-   MacCR   : constant String := String'(1 => ASCII.CR);
-   OS2CRLF : constant String := String'(1 => ASCII.CR, 2 => ASCII.LF);
-   package LR is new Linereader(UnixLF);
+   package LR is new Linereader(Ada.Strings.Unbounded.To_String(Globals.Current_Lineending));
    use LR;
 
    function Read_Excerpt (
@@ -117,8 +116,11 @@ package body Generator.Frontmatter is
 
                   Insert
                   (T, Assoc
-                     (FIX.Trim(Frontmatter (First_Nonblank_Position .. Separator_Position-1), Ada.Strings.Both),
-                      FIX.Trim(Frontmatter (Separator_Position+1 .. Last_Nonblank_Position), Ada.Strings.Both)
+                     (FIX.Trim(Frontmatter (First_Nonblank_Position ..
+                     Separator_Position-1), whitespace,whitespace),
+
+                      FIX.Trim(Frontmatter (Separator_Position+1 ..
+                      Last_Nonblank_Position), whitespace,whitespace)
                      )
                   );
               end if;

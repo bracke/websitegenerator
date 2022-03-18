@@ -33,8 +33,8 @@ private
       Len : Natural) is tagged
    record
       Source   : Str_Access   := Str;
-      Backup   : Natural      := 0;
-      Position : Positive      := 1;
+      Backup   : Positive     := 1;
+      Position : Positive     := 1;
       Last     : Natural      := Len;
       End_Of_Input : Boolean  := false;
    end record;

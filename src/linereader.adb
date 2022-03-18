@@ -40,6 +40,7 @@ package body Linereader is
 
    function Get_Line(Self: in out Reader) return String is
       Next_Separator : Natural;
+
    begin
       if Self.End_Of_Input then
          raise End_Of_Input_Exception;
